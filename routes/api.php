@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\EmployerApiController;
 use App\Http\Controllers\Api\OrganizationalUnitApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:api-client'])->group(function () {
+Route::middleware(['auth:api-client', 'throttle:60,1'])->group(function () {
     Route::post('cases', [CaseApiController::class, 'store'])
         ->middleware('ability:cases:create');
 
