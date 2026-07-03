@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
-#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'status', 'source'])]
+#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'bsn', 'status', 'source'])]
 class Employee extends Model
 {
     use HasTenantScope, HasUuidPrimaryKey;
@@ -17,7 +17,13 @@ class Employee extends Model
     {
         return [
             'date_of_birth' => 'date',
+            'bsn'           => 'encrypted',
         ];
+    }
+
+    public function cases(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CaseFile::class);
     }
 
     /**
