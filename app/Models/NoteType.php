@@ -3,11 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
+/**
+ * @property string $id
+ * @property string $tenant_id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 #[Fillable(['tenant_id', 'name'])]
 class NoteType extends Model
 {
@@ -32,5 +40,31 @@ class NoteType extends Model
     public function permissionFor(string $role): ?NoteTypePermission
     {
         return $this->permissions->firstWhere('role', $role);
+    }
+
+    /**
+     * Scope to note types where the user's role has can_read = true.
+     *
+     * @param  Builder<NoteType>  $query
+     * @return Builder<NoteType>
+     */
+    public function scopeReadableBy(Builder $query, User $user): Builder
+    {
+        return $query->whereHas('permissions', function (Builder $q) use ($user): void {
+            $q->where('role', $user->current_role)->where('can_read', true);
+        });
+    }
+
+    /**
+     * Scope to note types where the user's role has can_write = true.
+     *
+     * @param  Builder<NoteType>  $query
+     * @return Builder<NoteType>
+     */
+    public function scopeWritableBy(Builder $query, User $user): Builder
+    {
+        return $query->whereHas('permissions', function (Builder $q) use ($user): void {
+            $q->where('role', $user->current_role)->where('can_write', true);
+        });
     }
 }
