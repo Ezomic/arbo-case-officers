@@ -65,12 +65,77 @@ class CaseApiController extends Controller
             ->findOrFail($case);
     }
 
-    /**
-     * Doctors pushes structured, non-medical outcomes back here after
-     * recording the actual medical detail in its own isolated database —
-     * re-checking tenant_id against the case row itself rather than
-     * trusting the caller.
-     */
+    public function mutate(Request $request, string $case): CaseFile
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'expected_return_date' => ['nullable', 'date'],
+        ]);
+
+        $caseFile = CaseFile::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->where('status', 'open')
+            ->findOrFail($case);
+
+        $caseFile->update([
+            'expected_return_date' => $data['expected_return_date'] ?? null,
+        ]);
+
+        return $caseFile;
+    }
+
+    public function close(Request $request, string $case): CaseFile
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'recovery_date' => ['required', 'date'],
+        ]);
+
+        $caseFile = CaseFile::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->where('status', 'open')
+            ->findOrFail($case);
+
+        $caseFile->update([
+            'status' => 'closed',
+            'closed_at' => $data['recovery_date'],
+        ]);
+
+        return $caseFile;
+    }
+
+    public function sync(Request $request, string $case): \Illuminate\Http\Response
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'employee_id' => ['required', 'uuid'],
+            'status' => ['required', 'string'],
+            'opened_at' => ['required', 'date'],
+            'expected_return_date' => ['nullable', 'date'],
+            'closed_at' => ['nullable', 'date'],
+        ]);
+
+        $employee = Employee::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->findOrFail($data['employee_id']);
+
+        CaseFile::withoutGlobalScope('tenant')->updateOrCreate(
+            ['id' => $case],
+            [
+                'tenant_id' => $data['tenant_id'],
+                'employer_id' => $employee->employer_id,
+                'employee_id' => $data['employee_id'],
+                'case_type' => 'verzuim',
+                'status' => $data['status'],
+                'opened_at' => $data['opened_at'],
+                'expected_return_date' => $data['expected_return_date'],
+                'closed_at' => $data['closed_at'],
+            ],
+        );
+
+        return response()->noContent();
+    }
+
     public function update(Request $request, string $case): CaseFile
     {
         $data = $request->validate([

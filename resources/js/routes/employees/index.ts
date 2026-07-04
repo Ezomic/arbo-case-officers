@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\EmployeeController::index
-* @see app/Http/Controllers/EmployeeController.php:15
+* @see app/Http/Controllers/EmployeeController.php:18
 * @route '/employees'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -81,8 +81,89 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 index.form = indexForm
 
 /**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+export const search = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+
+search.definition = {
+    methods: ["get","head"],
+    url: '/employees/search',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+search.url = (options?: RouteQueryOptions) => {
+    return search.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+search.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+search.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: search.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+const searchForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: search.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+searchForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: search.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\EmployeeController::search
+* @see app/Http/Controllers/EmployeeController.php:28
+* @route '/employees/search'
+*/
+searchForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: search.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+search.form = searchForm
+
+/**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:25
+* @see app/Http/Controllers/EmployeeController.php:77
 * @route '/employers/{employer}/employees'
 */
 export const store = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +178,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:25
+* @see app/Http/Controllers/EmployeeController.php:77
 * @route '/employers/{employer}/employees'
 */
 store.url = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -130,7 +211,7 @@ store.url = (args: { employer: string | { id: string } } | [employer: string | {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:25
+* @see app/Http/Controllers/EmployeeController.php:77
 * @route '/employers/{employer}/employees'
 */
 store.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -140,7 +221,7 @@ store.post = (args: { employer: string | { id: string } } | [employer: string | 
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:25
+* @see app/Http/Controllers/EmployeeController.php:77
 * @route '/employers/{employer}/employees'
 */
 const storeForm = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -150,7 +231,7 @@ const storeForm = (args: { employer: string | { id: string } } | [employer: stri
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:25
+* @see app/Http/Controllers/EmployeeController.php:77
 * @route '/employers/{employer}/employees'
 */
 storeForm.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -162,6 +243,7 @@ store.form = storeForm
 
 const employees = {
     index: Object.assign(index, index),
+    search: Object.assign(search, search),
     store: Object.assign(store, store),
 }
 

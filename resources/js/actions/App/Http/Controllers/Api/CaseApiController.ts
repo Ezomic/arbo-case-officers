@@ -237,7 +237,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:113
 * @route '/api/cases/{case}'
 */
 export const update = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -252,7 +252,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:113
 * @route '/api/cases/{case}'
 */
 update.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -279,7 +279,7 @@ update.url = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:113
 * @route '/api/cases/{case}'
 */
 update.put = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -289,7 +289,7 @@ update.put = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:113
 * @route '/api/cases/{case}'
 */
 const updateForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -304,7 +304,7 @@ const updateForm = (args: { case: string | number } | [caseParam: string | numbe
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:113
 * @route '/api/cases/{case}'
 */
 updateForm.put = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -319,6 +319,154 @@ updateForm.put = (args: { case: string | number } | [caseParam: string | number 
 
 update.form = updateForm
 
-const CaseApiController = { store, index, show, update }
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::mutate
+* @see app/Http/Controllers/Api/CaseApiController.php:68
+* @route '/api/cases/{case}/mutate'
+*/
+export const mutate = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: mutate.url(args, options),
+    method: 'post',
+})
+
+mutate.definition = {
+    methods: ["post"],
+    url: '/api/cases/{case}/mutate',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::mutate
+* @see app/Http/Controllers/Api/CaseApiController.php:68
+* @route '/api/cases/{case}/mutate'
+*/
+mutate.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { case: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            case: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        case: args.case,
+    }
+
+    return mutate.definition.url
+            .replace('{case}', parsedArgs.case.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::mutate
+* @see app/Http/Controllers/Api/CaseApiController.php:68
+* @route '/api/cases/{case}/mutate'
+*/
+mutate.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: mutate.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::mutate
+* @see app/Http/Controllers/Api/CaseApiController.php:68
+* @route '/api/cases/{case}/mutate'
+*/
+const mutateForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: mutate.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::mutate
+* @see app/Http/Controllers/Api/CaseApiController.php:68
+* @route '/api/cases/{case}/mutate'
+*/
+mutateForm.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: mutate.url(args, options),
+    method: 'post',
+})
+
+mutate.form = mutateForm
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::close
+* @see app/Http/Controllers/Api/CaseApiController.php:87
+* @route '/api/cases/{case}/close'
+*/
+export const close = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: close.url(args, options),
+    method: 'post',
+})
+
+close.definition = {
+    methods: ["post"],
+    url: '/api/cases/{case}/close',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::close
+* @see app/Http/Controllers/Api/CaseApiController.php:87
+* @route '/api/cases/{case}/close'
+*/
+close.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { case: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            case: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        case: args.case,
+    }
+
+    return close.definition.url
+            .replace('{case}', parsedArgs.case.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::close
+* @see app/Http/Controllers/Api/CaseApiController.php:87
+* @route '/api/cases/{case}/close'
+*/
+close.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: close.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::close
+* @see app/Http/Controllers/Api/CaseApiController.php:87
+* @route '/api/cases/{case}/close'
+*/
+const closeForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: close.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Api\CaseApiController::close
+* @see app/Http/Controllers/Api/CaseApiController.php:87
+* @route '/api/cases/{case}/close'
+*/
+closeForm.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: close.url(args, options),
+    method: 'post',
+})
+
+close.form = closeForm
+
+const CaseApiController = { store, index, show, update, mutate, close }
 
 export default CaseApiController

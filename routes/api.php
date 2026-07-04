@@ -18,7 +18,16 @@ Route::middleware(['auth:api-client', 'throttle:api-client'])->group(function ()
     Route::get('cases/{case}', [CaseApiController::class, 'show'])
         ->middleware('ability:cases:read');
 
-    Route::put('cases/{case}', [CaseApiController::class, 'update'])
+    Route::put('cases/{case}', [CaseApiController::class, 'sync'])
+        ->middleware('ability:cases:write');
+
+    Route::patch('cases/{case}', [CaseApiController::class, 'update'])
+        ->middleware('ability:cases:write');
+
+    Route::post('cases/{case}/mutate', [CaseApiController::class, 'mutate'])
+        ->middleware('ability:cases:write');
+
+    Route::post('cases/{case}/close', [CaseApiController::class, 'close'])
         ->middleware('ability:cases:write');
 
     Route::get('employers/{employer}', [EmployerApiController::class, 'show'])
