@@ -10,11 +10,13 @@ import { show as showEmployer } from '@/routes/employers';
 import { index } from '@/routes/cases';
 import { store as storeNote, update as updateNote, destroy as destroyNote } from '@/routes/case-notes';
 import { store as storeTask, complete as completeTask, destroy as destroyTask } from '@/routes/case-tasks';
+import { update as updateAssignment } from '@/routes/case-assignment';
 
 type CaseFile = {
     id: string;
     case_type: string | null;
     status: string;
+    case_officer_user_id: string | null;
     opened_at: string;
     closed_at: string | null;
     advice: string | null;
@@ -22,6 +24,7 @@ type CaseFile = {
     expected_return_date: string | null;
     employer: { id: string; name: string };
     employee: { id: string; first_name: string; last_name: string };
+    assigned_officer: { id: string; name: string } | null;
 };
 
 type Note = {
@@ -50,6 +53,8 @@ type Task = {
 
 type TaskType = { id: string; name: string };
 
+type CaseOfficer = { id: string; name: string };
+
 type TimelineEvent = {
     id: number;
     event: string;
@@ -66,6 +71,7 @@ const props = defineProps<{
     timeline: TimelineEvent[];
     tasks: Task[];
     taskTypes: TaskType[];
+    caseOfficers: CaseOfficer[];
     can: { manage_cases: boolean; close_cases: boolean };
 }>();
 
@@ -93,6 +99,14 @@ const taskForm = useForm({
     description: '',
     due_date: '',
 });
+
+const assignForm = useForm({
+    case_officer_user_id: props.case.case_officer_user_id ?? '',
+});
+
+function submitAssignment() {
+    assignForm.put(updateAssignment(props.case.id).url, { preserveScroll: true });
+}
 
 function submitNote() {
     noteForm.post(storeNote(props.case.id).url, {
@@ -140,6 +154,8 @@ const eventLabels: Record<string, string> = {
     return_date_set: 'Return date set',
     outcome_shared: 'Medical outcome shared',
     note_added: 'Note added',
+    case_assigned: 'Case assigned',
+    case_handed_over: 'Case handed over',
 };
 
 function eventLabel(event: string): string {
@@ -178,6 +194,25 @@ function formatDate(dateStr: string | null): string {
                         <div>
                             <dt class="text-muted-foreground">Status</dt>
                             <dd class="font-medium capitalize">{{ props.case.status }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-muted-foreground">Case officer</dt>
+                            <dd v-if="!props.can.manage_cases" class="font-medium">
+                                {{ props.case.assigned_officer?.name ?? '—' }}
+                            </dd>
+                            <dd v-else class="flex items-center gap-2">
+                                <Select v-model="assignForm.case_officer_user_id" class="flex-1">
+                                    <SelectTrigger class="h-8 text-sm">
+                                        <SelectValue placeholder="Unassigned" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem v-for="officer in props.caseOfficers" :key="officer.id" :value="officer.id">
+                                            {{ officer.name }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Button size="sm" class="h-8" :disabled="assignForm.processing" @click="submitAssignment">Save</Button>
+                            </dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Opened</dt>

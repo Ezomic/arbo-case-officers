@@ -54,4 +54,10 @@ class CaseFile extends Model
     {
         return $this->hasMany(CaseTask::class, 'case_id');
     }
+
+    /** @return BelongsTo<User, $this> */
+    public function assignedOfficer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'case_officer_user_id');
+    }
 }
