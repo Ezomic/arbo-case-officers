@@ -6,6 +6,7 @@ use App\Http\Controllers\CaseNoteController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\GdprExportController;
 use App\Http\Controllers\OrganizationalUnitController;
 use Illuminate\Support\Facades\Route;
 use RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController;
@@ -26,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+    Route::get('employees/{employee}/gdpr-export', [GdprExportController::class, 'employee'])->name('employees.gdpr-export');
 
     Route::get('cases', [CaseController::class, 'index'])->name('cases.index');
     Route::post('cases', [CaseController::class, 'store'])->name('cases.store');
