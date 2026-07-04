@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\CaseType;
 use App\Models\CaseFile;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -61,6 +62,10 @@ class HandleInertiaRequests extends Middleware
                         'expected_return_date' => $case->expected_return_date?->toDateString(),
                     ]);
             },
+            'sidebarCaseTypes' => array_map(
+                fn (CaseType $t) => ['value' => $t->value, 'label' => $t->label()],
+                CaseType::cases(),
+            ),
         ];
     }
 }

@@ -138,7 +138,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 export const show = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -153,7 +153,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 show.url = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -186,7 +186,7 @@ show.url = (args: { employer: string | { id: string } } | [employer: string | { 
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 show.get = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -196,7 +196,7 @@ show.get = (args: { employer: string | { id: string } } | [employer: string | { 
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 show.head = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -206,7 +206,7 @@ show.head = (args: { employer: string | { id: string } } | [employer: string | {
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 const showForm = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -216,7 +216,7 @@ const showForm = (args: { employer: string | { id: string } } | [employer: strin
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 showForm.get = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -226,7 +226,7 @@ showForm.get = (args: { employer: string | { id: string } } | [employer: string 
 
 /**
 * @see \App\Http\Controllers\EmployerController::show
-* @see app/Http/Controllers/EmployerController.php:34
+* @see app/Http/Controllers/EmployerController.php:36
 * @route '/employers/{employer}'
 */
 showForm.head = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

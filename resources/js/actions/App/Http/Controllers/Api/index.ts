@@ -1,5 +1,6 @@
 import CaseApiController from './CaseApiController'
 import EmployerApiController from './EmployerApiController'
+import ContactPersonApiController from './ContactPersonApiController'
 import ContractApiController from './ContractApiController'
 import ContactPersonApiController from './ContactPersonApiController'
 import OrganizationalUnitApiController from './OrganizationalUnitApiController'
@@ -9,6 +10,7 @@ import EmployeeImportApiController from './EmployeeImportApiController'
 const Api = {
     CaseApiController: Object.assign(CaseApiController, CaseApiController),
     EmployerApiController: Object.assign(EmployerApiController, EmployerApiController),
+    ContactPersonApiController: Object.assign(ContactPersonApiController, ContactPersonApiController),
     ContractApiController: Object.assign(ContractApiController, ContractApiController),
     ContactPersonApiController: Object.assign(ContactPersonApiController, ContactPersonApiController),
     OrganizationalUnitApiController: Object.assign(OrganizationalUnitApiController, OrganizationalUnitApiController),

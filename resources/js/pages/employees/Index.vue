@@ -3,9 +3,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Download } from '@lucide/vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { employee as gdprExportUrl } from '@/routes/gdpr-export';
 import { show as showEmployer } from '@/routes/employers';
-import { index } from '@/routes/employees';
+import { gdprExport as gdprExportUrl, index } from '@/routes/employees';
 
 type Employee = {
     id: string;
@@ -49,12 +48,20 @@ defineOptions({
                     :href="showEmployer(employee.employer.id)"
                     class="min-w-0 flex-1 hover:underline"
                 >
-                    <div class="font-medium">{{ employee.first_name }} {{ employee.last_name }}</div>
+                    <div class="font-medium">
+                        {{ employee.first_name }} {{ employee.last_name }}
+                    </div>
                     <div class="text-sm text-muted-foreground">
                         {{ employee.employer.name }}
-                        <span v-if="employee.organizational_unit"> · {{ employee.organizational_unit.name }}</span>
-                        <span v-if="employee.employee_number"> · #{{ employee.employee_number }}</span>
-                        <span v-if="employee.email"> · {{ employee.email }}</span>
+                        <span v-if="employee.organizational_unit">
+                            · {{ employee.organizational_unit.name }}</span
+                        >
+                        <span v-if="employee.employee_number">
+                            · #{{ employee.employee_number }}</span
+                        >
+                        <span v-if="employee.email">
+                            · {{ employee.email }}</span
+                        >
                         · {{ employee.status }} ({{ employee.source }})
                     </div>
                 </Link>
@@ -68,7 +75,10 @@ defineOptions({
                     </Button>
                 </a>
             </div>
-            <p v-if="employees.length === 0" class="text-sm text-muted-foreground">
+            <p
+                v-if="employees.length === 0"
+                class="text-sm text-muted-foreground"
+            >
                 No employees yet — add one from an employer's page.
             </p>
         </div>

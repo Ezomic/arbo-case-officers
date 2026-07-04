@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../wayfinder'
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ login.definition = {
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 login.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ login.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/RedirectToIdentityController.php:34
 * @route '/login'
 */
 loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ login.form = loginForm
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
 * @route '/logout'
 */
 export const logout = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +97,7 @@ logout.definition = {
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
 * @route '/logout'
 */
 logout.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ logout.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
 * @route '/logout'
 */
 logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -116,7 +116,7 @@ logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
 * @route '/logout'
 */
 const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -126,7 +126,7 @@ const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> =>
 
 /**
 * @see \RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController::__invoke
-* @see Users/robbinthijssen/Herd/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
+* @see Users/robbinthijssen/Projects/arbo-saas/identity-sso-kit/src/Http/Controllers/LogoutController.php:24
 * @route '/logout'
 */
 logoutForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -338,8 +338,8 @@ homeForm.options = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 home.form = homeForm
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -348,13 +348,13 @@ export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> =
 })
 
 dashboard.definition = {
-    methods: ["get","head","post","put","patch","delete","options"],
+    methods: ["get","head"],
     url: '/dashboard',
-} satisfies RouteDefinition<["get","head","post","put","patch","delete","options"]>
+} satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 dashboard.url = (options?: RouteQueryOptions) => {
@@ -362,8 +362,8 @@ dashboard.url = (options?: RouteQueryOptions) => {
 }
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -372,8 +372,8 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -382,58 +382,8 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboard.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: dashboard.url(options),
-    method: 'post',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboard.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
-    url: dashboard.url(options),
-    method: 'put',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboard.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: dashboard.url(options),
-    method: 'patch',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboard.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
-    url: dashboard.url(options),
-    method: 'delete',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboard.options = (options?: RouteQueryOptions): RouteDefinition<'options'> => ({
-    url: dashboard.url(options),
-    method: 'options',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -442,8 +392,8 @@ const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> 
 })
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -452,84 +402,14 @@ dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
 })
 
 /**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
+* @see \App\Http\Controllers\AbsenceDashboardController::dashboard
+* @see app/Http/Controllers/AbsenceDashboardController.php:14
 * @route '/dashboard'
 */
 dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: dashboard.url({
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboardForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: dashboard.url(options),
-    method: 'post',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboardForm.put = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: dashboard.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PUT',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboardForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: dashboard.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PATCH',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboardForm.delete = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: dashboard.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'DELETE',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-/**
-* @see \Illuminate\Routing\RedirectController::__invoke
-* @see vendor/laravel/framework/src/Illuminate/Routing/RedirectController.php:19
-* @route '/dashboard'
-*/
-dashboardForm.options = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: dashboard.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'OPTIONS',
             ...(options?.query ?? options?.mergeQuery ?? {}),
         }
     }),

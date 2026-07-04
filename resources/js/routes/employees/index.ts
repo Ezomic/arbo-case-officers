@@ -162,8 +162,113 @@ searchForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 search.form = searchForm
 
 /**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+export const gdprExport = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gdprExport.url(args, options),
+    method: 'get',
+})
+
+gdprExport.definition = {
+    methods: ["get","head"],
+    url: '/employees/{employee}/gdpr-export',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+gdprExport.url = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { employee: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { employee: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            employee: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        employee: typeof args.employee === 'object'
+        ? args.employee.id
+        : args.employee,
+    }
+
+    return gdprExport.definition.url
+            .replace('{employee}', parsedArgs.employee.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+gdprExport.get = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gdprExport.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+gdprExport.head = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: gdprExport.url(args, options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+const gdprExportForm = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: gdprExport.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+gdprExportForm.get = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: gdprExport.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\GdprExportController::gdprExport
+* @see app/Http/Controllers/GdprExportController.php:14
+* @route '/employees/{employee}/gdpr-export'
+*/
+gdprExportForm.head = (args: { employee: string | { id: string } } | [employee: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: gdprExport.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+gdprExport.form = gdprExportForm
+
+/**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 export const store = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +283,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 store.url = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -211,7 +316,7 @@ store.url = (args: { employer: string | { id: string } } | [employer: string | {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 store.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -221,7 +326,7 @@ store.post = (args: { employer: string | { id: string } } | [employer: string | 
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 const storeForm = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -231,7 +336,7 @@ const storeForm = (args: { employer: string | { id: string } } | [employer: stri
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 storeForm.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -244,6 +349,7 @@ store.form = storeForm
 const employees = {
     index: Object.assign(index, index),
     search: Object.assign(search, search),
+    gdprExport: Object.assign(gdprExport, gdprExport),
     store: Object.assign(store, store),
 }
 

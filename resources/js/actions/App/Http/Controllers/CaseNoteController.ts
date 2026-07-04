@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
 * @see app/Http/Controllers/CaseNoteController.php:16
@@ -253,10 +253,6 @@ destroyForm.delete = (args: { case: string | { id: string }, note: string | { id
 
 destroy.form = destroyForm
 
-const caseNotes = {
-    store: Object.assign(store, store),
-    update: Object.assign(update, update),
-    destroy: Object.assign(destroy, destroy),
-}
+const CaseNoteController = { store, update, destroy }
 
-export default caseNotes
+export default CaseNoteController

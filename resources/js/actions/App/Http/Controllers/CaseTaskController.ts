@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CaseTaskController::store
 * @see app/Http/Controllers/CaseTaskController.php:13
@@ -330,11 +330,6 @@ destroyForm.delete = (args: { case: string | { id: string }, task: string | { id
 
 destroy.form = destroyForm
 
-const caseTasks = {
-    store: Object.assign(store, store),
-    update: Object.assign(update, update),
-    complete: Object.assign(complete, complete),
-    destroy: Object.assign(destroy, destroy),
-}
+const CaseTaskController = { store, update, complete, destroy }
 
-export default caseTasks
+export default CaseTaskController

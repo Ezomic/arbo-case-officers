@@ -5,12 +5,26 @@ import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { show as showEmployer } from '@/routes/employers';
 import { index } from '@/routes/cases';
-import { store as storeNote, update as updateNote, destroy as destroyNote } from '@/routes/case-notes';
-import { store as storeTask, complete as completeTask, destroy as destroyTask } from '@/routes/case-tasks';
-import { update as updateAssignment } from '@/routes/case-assignment';
+import {
+    store as storeNote,
+    update as updateNote,
+    destroy as destroyNote,
+} from '@/routes/case-notes';
+import {
+    store as storeTask,
+    complete as completeTask,
+    destroy as destroyTask,
+} from '@/routes/case-tasks';
+import { update as updateAssignment } from '@/routes/cases/assignment';
 
 type CaseFile = {
     id: string;
@@ -77,9 +91,7 @@ const props = defineProps<{
 
 defineOptions({
     layout: {
-        breadcrumbs: [
-            { title: 'Cases', href: index() },
-        ],
+        breadcrumbs: [{ title: 'Cases', href: index() }],
     },
 });
 
@@ -105,13 +117,17 @@ const assignForm = useForm({
 });
 
 function submitAssignment() {
-    assignForm.put(updateAssignment(props.case.id).url, { preserveScroll: true });
+    assignForm.put(updateAssignment(props.case.id).url, {
+        preserveScroll: true,
+    });
 }
 
 function submitNote() {
     noteForm.post(storeNote(props.case.id).url, {
         preserveScroll: true,
-        onSuccess: () => { noteForm.reset('body'); },
+        onSuccess: () => {
+            noteForm.reset('body');
+        },
     });
 }
 
@@ -123,29 +139,42 @@ function startEdit(note: Note) {
 function submitEdit(note: Note) {
     editForm.put(updateNote({ case: props.case.id, note: note.id }).url, {
         preserveScroll: true,
-        onSuccess: () => { editingNoteId.value = null; },
+        onSuccess: () => {
+            editingNoteId.value = null;
+        },
     });
 }
 
 function deleteNote(note: Note) {
     if (!confirm('Delete this note?')) return;
-    useForm({}).delete(destroyNote({ case: props.case.id, note: note.id }).url, { preserveScroll: true });
+    useForm({}).delete(
+        destroyNote({ case: props.case.id, note: note.id }).url,
+        { preserveScroll: true },
+    );
 }
 
 function submitTask() {
     taskForm.post(storeTask(props.case.id).url, {
         preserveScroll: true,
-        onSuccess: () => { taskForm.reset(); showTaskForm.value = false; },
+        onSuccess: () => {
+            taskForm.reset();
+            showTaskForm.value = false;
+        },
     });
 }
 
 function markComplete(task: Task) {
-    useForm({}).post(completeTask({ case: props.case.id, task: task.id }).url, { preserveScroll: true });
+    useForm({}).post(completeTask({ case: props.case.id, task: task.id }).url, {
+        preserveScroll: true,
+    });
 }
 
 function deleteTask(task: Task) {
     if (!confirm('Delete this task?')) return;
-    useForm({}).delete(destroyTask({ case: props.case.id, task: task.id }).url, { preserveScroll: true });
+    useForm({}).delete(
+        destroyTask({ case: props.case.id, task: task.id }).url,
+        { preserveScroll: true },
+    );
 }
 
 const eventLabels: Record<string, string> = {
@@ -164,12 +193,18 @@ function eventLabel(event: string): string {
 
 function formatDate(dateStr: string | null): string {
     if (!dateStr) return '';
-    return new Date(dateStr).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(dateStr).toLocaleDateString('nl-NL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
 }
 </script>
 
 <template>
-    <Head :title="`${props.case.employee.first_name} ${props.case.employee.last_name}`" />
+    <Head
+        :title="`${props.case.employee.first_name} ${props.case.employee.last_name}`"
+    />
 
     <div class="flex flex-col gap-6 p-4">
         <Heading
@@ -186,58 +221,98 @@ function formatDate(dateStr: string | null): string {
                         <div>
                             <dt class="text-muted-foreground">Employer</dt>
                             <dd>
-                                <Link :href="showEmployer(props.case.employer.id)" class="font-medium underline underline-offset-4">
+                                <Link
+                                    :href="showEmployer(props.case.employer.id)"
+                                    class="font-medium underline underline-offset-4"
+                                >
                                     {{ props.case.employer.name }}
                                 </Link>
                             </dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Status</dt>
-                            <dd class="font-medium capitalize">{{ props.case.status }}</dd>
+                            <dd class="font-medium capitalize">
+                                {{ props.case.status }}
+                            </dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Case officer</dt>
-                            <dd v-if="!props.can.manage_cases" class="font-medium">
+                            <dd
+                                v-if="!props.can.manage_cases"
+                                class="font-medium"
+                            >
                                 {{ props.case.assigned_officer?.name ?? '—' }}
                             </dd>
                             <dd v-else class="flex items-center gap-2">
-                                <Select v-model="assignForm.case_officer_user_id" class="flex-1">
+                                <Select
+                                    v-model="assignForm.case_officer_user_id"
+                                    class="flex-1"
+                                >
                                     <SelectTrigger class="h-8 text-sm">
                                         <SelectValue placeholder="Unassigned" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem v-for="officer in props.caseOfficers" :key="officer.id" :value="officer.id">
+                                        <SelectItem
+                                            v-for="officer in props.caseOfficers"
+                                            :key="officer.id"
+                                            :value="officer.id"
+                                        >
                                             {{ officer.name }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <Button size="sm" class="h-8" :disabled="assignForm.processing" @click="submitAssignment">Save</Button>
+                                <Button
+                                    size="sm"
+                                    class="h-8"
+                                    :disabled="assignForm.processing"
+                                    @click="submitAssignment"
+                                    >Save</Button
+                                >
                             </dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Opened</dt>
-                            <dd class="font-medium">{{ formatDate(props.case.opened_at) }}</dd>
+                            <dd class="font-medium">
+                                {{ formatDate(props.case.opened_at) }}
+                            </dd>
                         </div>
                         <div v-if="props.case.closed_at">
                             <dt class="text-muted-foreground">Closed</dt>
-                            <dd class="font-medium">{{ formatDate(props.case.closed_at) }}</dd>
+                            <dd class="font-medium">
+                                {{ formatDate(props.case.closed_at) }}
+                            </dd>
                         </div>
                     </dl>
                 </div>
 
                 <div class="rounded-lg border p-4">
                     <h2 class="mb-4 font-medium">From the doctor</h2>
-                    <p v-if="!props.case.advice && !props.case.restrictions && !props.case.expected_return_date" class="text-sm text-muted-foreground">
+                    <p
+                        v-if="
+                            !props.case.advice &&
+                            !props.case.restrictions &&
+                            !props.case.expected_return_date
+                        "
+                        class="text-sm text-muted-foreground"
+                    >
                         No medical outcomes have been shared yet.
                     </p>
                     <dl v-else class="space-y-3 text-sm">
                         <div v-if="props.case.expected_return_date">
-                            <dt class="text-muted-foreground">Expected return date</dt>
-                            <dd class="font-medium">{{ formatDate(props.case.expected_return_date) }}</dd>
+                            <dt class="text-muted-foreground">
+                                Expected return date
+                            </dt>
+                            <dd class="font-medium">
+                                {{
+                                    formatDate(props.case.expected_return_date)
+                                }}
+                            </dd>
                         </div>
                         <div v-if="props.case.restrictions">
                             <dt class="text-muted-foreground">Restrictions</dt>
-                            <dd class="font-medium">{{ props.case.restrictions }}</dd>
+                            <dd class="font-medium">
+                                {{ props.case.restrictions }}
+                            </dd>
                         </div>
                         <div v-if="props.case.advice">
                             <dt class="text-muted-foreground">Advice</dt>
@@ -250,29 +325,61 @@ function formatDate(dateStr: string | null): string {
                 <div class="rounded-lg border p-4">
                     <div class="mb-4 flex items-center justify-between">
                         <h2 class="font-medium">Tasks</h2>
-                        <Button v-if="props.case.status === 'open' && props.can.manage_cases" size="sm" variant="ghost" @click="showTaskForm = !showTaskForm">
+                        <Button
+                            v-if="
+                                props.case.status === 'open' &&
+                                props.can.manage_cases
+                            "
+                            size="sm"
+                            variant="ghost"
+                            @click="showTaskForm = !showTaskForm"
+                        >
                             {{ showTaskForm ? 'Cancel' : 'Add task' }}
                         </Button>
                     </div>
 
-                    <div v-if="showTaskForm" class="mb-4 space-y-3 rounded-md border p-3">
-                        <Select v-if="props.taskTypes.length" v-model="taskForm.task_type_id">
+                    <div
+                        v-if="showTaskForm"
+                        class="mb-4 space-y-3 rounded-md border p-3"
+                    >
+                        <Select
+                            v-if="props.taskTypes.length"
+                            v-model="taskForm.task_type_id"
+                        >
                             <SelectTrigger>
-                                <SelectValue placeholder="Task type (optional)" />
+                                <SelectValue
+                                    placeholder="Task type (optional)"
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem v-for="tt in props.taskTypes" :key="tt.id" :value="tt.id">
+                                <SelectItem
+                                    v-for="tt in props.taskTypes"
+                                    :key="tt.id"
+                                    :value="tt.id"
+                                >
                                     {{ tt.name }}
                                 </SelectItem>
                             </SelectContent>
                         </Select>
                         <Input v-model="taskForm.title" placeholder="Title" />
-                        <Textarea v-model="taskForm.description" placeholder="Description (optional)" rows="2" />
+                        <Textarea
+                            v-model="taskForm.description"
+                            placeholder="Description (optional)"
+                            rows="2"
+                        />
                         <Input v-model="taskForm.due_date" type="date" />
-                        <Button size="sm" :disabled="taskForm.processing" @click="submitTask">Add</Button>
+                        <Button
+                            size="sm"
+                            :disabled="taskForm.processing"
+                            @click="submitTask"
+                            >Add</Button
+                        >
                     </div>
 
-                    <div v-if="props.tasks.length === 0 && !showTaskForm" class="text-sm text-muted-foreground">
+                    <div
+                        v-if="props.tasks.length === 0 && !showTaskForm"
+                        class="text-sm text-muted-foreground"
+                    >
                         No tasks yet.
                     </div>
 
@@ -285,17 +392,62 @@ function formatDate(dateStr: string | null): string {
                         >
                             <div class="flex items-start justify-between gap-2">
                                 <div class="min-w-0 flex-1">
-                                    <p class="font-medium" :class="task.completed_at ? 'line-through' : ''">{{ task.title }}</p>
-                                    <p v-if="task.task_type_name" class="text-muted-foreground text-xs">{{ task.task_type_name }}</p>
-                                    <p v-if="task.due_date" class="text-muted-foreground text-xs">Due: {{ formatDate(task.due_date) }}</p>
-                                    <p v-if="task.assigned_to" class="text-muted-foreground text-xs">Assigned to: {{ task.assigned_to }}</p>
+                                    <p
+                                        class="font-medium"
+                                        :class="
+                                            task.completed_at
+                                                ? 'line-through'
+                                                : ''
+                                        "
+                                    >
+                                        {{ task.title }}
+                                    </p>
+                                    <p
+                                        v-if="task.task_type_name"
+                                        class="text-xs text-muted-foreground"
+                                    >
+                                        {{ task.task_type_name }}
+                                    </p>
+                                    <p
+                                        v-if="task.due_date"
+                                        class="text-xs text-muted-foreground"
+                                    >
+                                        Due: {{ formatDate(task.due_date) }}
+                                    </p>
+                                    <p
+                                        v-if="task.assigned_to"
+                                        class="text-xs text-muted-foreground"
+                                    >
+                                        Assigned to: {{ task.assigned_to }}
+                                    </p>
                                 </div>
-                                <div v-if="props.can.manage_cases" class="flex shrink-0 gap-1">
-                                    <Button v-if="!task.completed_at" size="sm" variant="ghost" class="h-7 px-2 text-xs" @click="markComplete(task)">Done</Button>
-                                    <Button size="sm" variant="ghost" class="text-destructive h-7 px-2 text-xs" @click="deleteTask(task)">Del</Button>
+                                <div
+                                    v-if="props.can.manage_cases"
+                                    class="flex shrink-0 gap-1"
+                                >
+                                    <Button
+                                        v-if="!task.completed_at"
+                                        size="sm"
+                                        variant="ghost"
+                                        class="h-7 px-2 text-xs"
+                                        @click="markComplete(task)"
+                                        >Done</Button
+                                    >
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        class="h-7 px-2 text-xs text-destructive"
+                                        @click="deleteTask(task)"
+                                        >Del</Button
+                                    >
                                 </div>
                             </div>
-                            <p v-if="task.description" class="text-muted-foreground mt-1 text-xs">{{ task.description }}</p>
+                            <p
+                                v-if="task.description"
+                                class="mt-1 text-xs text-muted-foreground"
+                            >
+                                {{ task.description }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -306,36 +458,83 @@ function formatDate(dateStr: string | null): string {
                 <div class="rounded-lg border p-4">
                     <h2 class="mb-4 font-medium">Notes</h2>
 
-                    <div v-if="props.notes.length === 0" class="text-sm text-muted-foreground">
+                    <div
+                        v-if="props.notes.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No notes yet.
                     </div>
 
                     <div class="space-y-4">
-                        <div v-for="note in props.notes" :key="note.id" class="rounded-md border p-3 text-sm">
-                            <div class="mb-1 flex items-center justify-between gap-2">
-                                <span class="font-medium">{{ note.note_type_name }}</span>
-                                <span class="text-muted-foreground text-xs">{{ formatDate(note.created_at) }}</span>
+                        <div
+                            v-for="note in props.notes"
+                            :key="note.id"
+                            class="rounded-md border p-3 text-sm"
+                        >
+                            <div
+                                class="mb-1 flex items-center justify-between gap-2"
+                            >
+                                <span class="font-medium">{{
+                                    note.note_type_name
+                                }}</span>
+                                <span class="text-xs text-muted-foreground">{{
+                                    formatDate(note.created_at)
+                                }}</span>
                             </div>
-                            <div class="text-muted-foreground mb-2 text-xs">{{ note.author_name }}</div>
+                            <div class="mb-2 text-xs text-muted-foreground">
+                                {{ note.author_name }}
+                            </div>
 
                             <template v-if="editingNoteId === note.id">
-                                <Textarea v-model="editForm.body" class="mb-2" rows="3" />
+                                <Textarea
+                                    v-model="editForm.body"
+                                    class="mb-2"
+                                    rows="3"
+                                />
                                 <div class="flex gap-2">
-                                    <Button size="sm" @click="submitEdit(note)">Save</Button>
-                                    <Button size="sm" variant="ghost" @click="editingNoteId = null">Cancel</Button>
+                                    <Button size="sm" @click="submitEdit(note)"
+                                        >Save</Button
+                                    >
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        @click="editingNoteId = null"
+                                        >Cancel</Button
+                                    >
                                 </div>
                             </template>
                             <template v-else>
-                                <p class="whitespace-pre-wrap">{{ note.body }}</p>
-                                <div v-if="note.can_update || note.can_delete" class="mt-2 flex gap-2">
-                                    <Button v-if="note.can_update" size="sm" variant="ghost" @click="startEdit(note)">Edit</Button>
-                                    <Button v-if="note.can_delete" size="sm" variant="ghost" class="text-destructive" @click="deleteNote(note)">Delete</Button>
+                                <p class="whitespace-pre-wrap">
+                                    {{ note.body }}
+                                </p>
+                                <div
+                                    v-if="note.can_update || note.can_delete"
+                                    class="mt-2 flex gap-2"
+                                >
+                                    <Button
+                                        v-if="note.can_update"
+                                        size="sm"
+                                        variant="ghost"
+                                        @click="startEdit(note)"
+                                        >Edit</Button
+                                    >
+                                    <Button
+                                        v-if="note.can_delete"
+                                        size="sm"
+                                        variant="ghost"
+                                        class="text-destructive"
+                                        @click="deleteNote(note)"
+                                        >Delete</Button
+                                    >
                                 </div>
                             </template>
                         </div>
                     </div>
 
-                    <div v-if="props.writableNoteTypes.length > 0" class="mt-4 border-t pt-4">
+                    <div
+                        v-if="props.writableNoteTypes.length > 0"
+                        class="mt-4 border-t pt-4"
+                    >
                         <h3 class="mb-3 text-sm font-medium">Add note</h3>
                         <form @submit.prevent="submitNote" class="space-y-3">
                             <Select v-model="noteForm.note_type_id">
@@ -343,13 +542,26 @@ function formatDate(dateStr: string | null): string {
                                     <SelectValue placeholder="Note type" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem v-for="nt in props.writableNoteTypes" :key="nt.id" :value="nt.id">
+                                    <SelectItem
+                                        v-for="nt in props.writableNoteTypes"
+                                        :key="nt.id"
+                                        :value="nt.id"
+                                    >
                                         {{ nt.name }}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Textarea v-model="noteForm.body" placeholder="Write your note…" rows="3" />
-                            <Button type="submit" size="sm" :disabled="noteForm.processing">Add note</Button>
+                            <Textarea
+                                v-model="noteForm.body"
+                                placeholder="Write your note…"
+                                rows="3"
+                            />
+                            <Button
+                                type="submit"
+                                size="sm"
+                                :disabled="noteForm.processing"
+                                >Add note</Button
+                            >
                         </form>
                     </div>
                 </div>
@@ -360,18 +572,40 @@ function formatDate(dateStr: string | null): string {
                 <div class="rounded-lg border p-4">
                     <h2 class="mb-4 font-medium">Timeline</h2>
 
-                    <div v-if="props.timeline.length === 0" class="text-sm text-muted-foreground">
+                    <div
+                        v-if="props.timeline.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No events recorded yet.
                     </div>
 
                     <ol class="relative space-y-4 border-l border-border pl-4">
-                        <li v-for="event in props.timeline" :key="event.id" class="relative">
-                            <span class="absolute -left-[1.15rem] mt-1 flex h-3 w-3 items-center justify-center rounded-full bg-primary ring-2 ring-background" />
-                            <p class="text-sm font-medium leading-tight">{{ eventLabel(event.event) }}</p>
-                            <p v-if="event.actor_name" class="text-muted-foreground text-xs">{{ event.actor_name }}</p>
-                            <p class="text-muted-foreground text-xs">{{ formatDate(event.occurred_at) }}</p>
+                        <li
+                            v-for="event in props.timeline"
+                            :key="event.id"
+                            class="relative"
+                        >
+                            <span
+                                class="absolute -left-[1.15rem] mt-1 flex h-3 w-3 items-center justify-center rounded-full bg-primary ring-2 ring-background"
+                            />
+                            <p class="text-sm leading-tight font-medium">
+                                {{ eventLabel(event.event) }}
+                            </p>
+                            <p
+                                v-if="event.actor_name"
+                                class="text-xs text-muted-foreground"
+                            >
+                                {{ event.actor_name }}
+                            </p>
+                            <p class="text-xs text-muted-foreground">
+                                {{ formatDate(event.occurred_at) }}
+                            </p>
                             <div v-if="event.payload" class="mt-1 space-y-0.5">
-                                <p v-for="(val, key) in event.payload" :key="key" class="text-muted-foreground text-xs">
+                                <p
+                                    v-for="(val, key) in event.payload"
+                                    :key="key"
+                                    class="text-xs text-muted-foreground"
+                                >
                                     {{ key }}: {{ val }}
                                 </p>
                             </div>
