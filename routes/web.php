@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\AbsenceDashboardController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseNoteController;
 use App\Http\Controllers\CaseTaskController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\GdprExportController;
 use App\Http\Controllers\OrganizationalUnitController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use RobbinThijssen\IdentitySsoKit\Http\Controllers\LogoutController;
 use RobbinThijssen\IdentitySsoKit\Http\Controllers\RedirectToIdentityController;
@@ -19,8 +20,8 @@ Route::get('sso/callback', SsoCallbackController::class)->name('sso.callback');
 Route::post('logout', LogoutController::class)->middleware('auth')->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('/', '/employers')->name('home');
-    Route::redirect('dashboard', '/employers')->name('dashboard');
+    Route::redirect('/', '/dashboard')->name('home');
+    Route::get('dashboard', [AbsenceDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('employers', [EmployerController::class, 'index'])->name('employers.index');
     Route::post('employers', [EmployerController::class, 'store'])->name('employers.store');
