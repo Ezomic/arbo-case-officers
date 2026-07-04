@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsenceDashboardController;
+use App\Http\Controllers\CaseAssignmentController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseNoteController;
 use App\Http\Controllers\CaseTaskController;
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cases/{case}', [CaseController::class, 'show'])->name('cases.show');
     Route::put('cases/{case}', [CaseController::class, 'update'])->name('cases.update');
     Route::post('cases/{case}/close', [CaseController::class, 'close'])->name('cases.close');
+    Route::put('cases/{case}/assignment', [CaseAssignmentController::class, 'update'])->name('cases.assignment.update');
 
     Route::post('cases/{case}/notes', [CaseNoteController::class, 'store'])->name('case-notes.store');
     Route::put('cases/{case}/notes/{note}', [CaseNoteController::class, 'update'])->name('case-notes.update');
