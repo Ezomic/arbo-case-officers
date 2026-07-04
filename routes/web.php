@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CaseNoteController;
+use App\Http\Controllers\CaseTaskController;
 use App\Http\Controllers\ContactPersonController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContractController;
@@ -43,6 +44,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cases/{case}/notes', [CaseNoteController::class, 'store'])->name('case-notes.store');
     Route::put('cases/{case}/notes/{note}', [CaseNoteController::class, 'update'])->name('case-notes.update');
     Route::delete('cases/{case}/notes/{note}', [CaseNoteController::class, 'destroy'])->name('case-notes.destroy');
+
+    Route::post('cases/{case}/tasks', [CaseTaskController::class, 'store'])->name('case-tasks.store');
+    Route::put('cases/{case}/tasks/{task}', [CaseTaskController::class, 'update'])->name('case-tasks.update');
+    Route::post('cases/{case}/tasks/{task}/complete', [CaseTaskController::class, 'complete'])->name('case-tasks.complete');
+    Route::delete('cases/{case}/tasks/{task}', [CaseTaskController::class, 'destroy'])->name('case-tasks.destroy');
 
     Route::post('employers/{employer}/contracts', [ContractController::class, 'store'])->name('contracts.store');
     Route::post('employers/{employer}/employees', [EmployeeController::class, 'store'])->name('employees.store');

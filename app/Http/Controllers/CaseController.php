@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Services\CaseEventService;
 use App\Services\EmployersClient;
 use App\Services\NoteTypeSyncService;
+use App\Services\TaskTypeSyncService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,7 @@ class CaseController extends Controller
         ]);
     }
 
-    public function show(CaseFile $case, NoteTypeSyncService $noteTypeSync, CaseEventService $events): Response
+    public function show(CaseFile $case, NoteTypeSyncService $noteTypeSync, TaskTypeSyncService $taskTypeSync, CaseEventService $events): Response
     {
         $timeline = CaseEvent::query()
             ->where('case_id', $case->id)
@@ -106,12 +107,31 @@ class CaseController extends Controller
                 'created_at' => $note->created_at,
             ]);
 
+        $taskTypes = $taskTypeSync->sync($user->tenant_id)
+            ->map(fn ($tt) => ['id' => $tt->id, 'name' => $tt->name]);
+
+        $tasks = $case->tasks()
+            ->with(['taskType:id,name', 'assignedUser:id,name'])
+            ->oldest('due_date')
+            ->get()
+            ->map(fn ($task) => [
+                'id' => $task->id,
+                'task_type_name' => $task->taskType?->name,
+                'title' => $task->title,
+                'description' => $task->description,
+                'due_date' => $task->due_date?->toDateString(),
+                'completed_at' => $task->completed_at,
+                'assigned_to' => $task->assignedUser?->name,
+            ]);
+
         return Inertia::render('cases/Show', [
             'case' => $case->load(['employer', 'employee']),
             'case_type_label' => $case->case_type?->label(),
             'notes' => $notes,
             'writableNoteTypes' => $writableNoteTypes->values(),
             'timeline' => $timeline,
+            'tasks' => $tasks,
+            'taskTypes' => $taskTypes->values(),
         ]);
     }
 
