@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $id
  * @property string $name
  * @property string $email
- * @property string $current_role
+ * @property string|null $current_role
  * @property string|null $tenant_id
  * @property array<int, array{slug: string, name: string, base_url: string}>|null $accessible_apps
  * @property Carbon|null $identity_synced_at
