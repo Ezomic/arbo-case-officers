@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\CaseType;
 use App\Http\Controllers\Controller;
 use App\Models\CaseFile;
 use App\Models\Employee;
+use App\Services\CaseEventService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class CaseApiController extends Controller
 {
@@ -32,7 +36,7 @@ class CaseApiController extends Controller
             'tenant_id' => $data['tenant_id'],
             'employer_id' => $employee->employer_id,
             'employee_id' => $employee->id,
-            'case_type' => 'verzuim',
+            'case_type' => CaseType::Verzuim,
             'opened_at' => $data['start_date'],
         ]);
     }
@@ -107,11 +111,12 @@ class CaseApiController extends Controller
         return $caseFile;
     }
 
-    public function sync(Request $request, string $case): \Illuminate\Http\Response
+    public function sync(Request $request, string $case): Response
     {
         $data = $request->validate([
             'tenant_id' => ['required', 'uuid'],
             'employee_id' => ['required', 'uuid'],
+            'case_type' => ['nullable', Rule::enum(CaseType::class)],
             'status' => ['required', 'string'],
             'opened_at' => ['required', 'date'],
             'expected_return_date' => ['nullable', 'date'],
@@ -128,7 +133,7 @@ class CaseApiController extends Controller
                 'tenant_id' => $data['tenant_id'],
                 'employer_id' => $employee->employer_id,
                 'employee_id' => $data['employee_id'],
-                'case_type' => 'verzuim',
+                'case_type' => $data['case_type'] ?? CaseType::Verzuim->value,
                 'status' => $data['status'],
                 'opened_at' => $data['opened_at'],
                 'expected_return_date' => $data['expected_return_date'],
@@ -139,7 +144,7 @@ class CaseApiController extends Controller
         return response()->noContent();
     }
 
-    public function update(Request $request, string $case): CaseFile
+    public function update(Request $request, string $case, CaseEventService $events): CaseFile
     {
         $data = $request->validate([
             'tenant_id' => ['required', 'uuid'],
@@ -157,6 +162,8 @@ class CaseApiController extends Controller
             'restrictions' => $data['restrictions'] ?? null,
             'expected_return_date' => $data['expected_return_date'] ?? null,
         ]);
+
+        $events->outcomeShared($caseFile->fresh());
 
         return $caseFile;
     }
