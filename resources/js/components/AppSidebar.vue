@@ -14,7 +14,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { index as dashboardIndex } from '@/routes/absence-dashboard';
+import { dashboard as dashboardIndex } from '@/routes';
 import { index as casesIndex } from '@/routes/cases';
 import { index as employeesIndex } from '@/routes/employees';
 import { index as employersIndex } from '@/routes/employers';

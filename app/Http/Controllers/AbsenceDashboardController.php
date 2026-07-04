@@ -38,7 +38,7 @@ class AbsenceDashboardController extends Controller
             ->values();
 
         $topEmployers = CaseFile::query()
-            ->where('status', 'open')
+            ->where('cases.status', 'open')
             ->join('employers', 'cases.employer_id', '=', 'employers.id')
             ->select('employers.name', DB::raw('count(*) as open_count'))
             ->groupBy('employers.id', 'employers.name')

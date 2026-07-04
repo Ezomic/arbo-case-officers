@@ -163,7 +163,7 @@ search.form = searchForm
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 export const store = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +178,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 store.url = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -211,7 +211,7 @@ store.url = (args: { employer: string | { id: string } } | [employer: string | {
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 store.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -221,7 +221,7 @@ store.post = (args: { employer: string | { id: string } } | [employer: string | 
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 const storeForm = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -231,7 +231,7 @@ const storeForm = (args: { employer: string | { id: string } } | [employer: stri
 
 /**
 * @see \App\Http\Controllers\EmployeeController::store
-* @see app/Http/Controllers/EmployeeController.php:77
+* @see app/Http/Controllers/EmployeeController.php:84
 * @route '/employers/{employer}/employees'
 */
 storeForm.post = (args: { employer: string | { id: string } } | [employer: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
