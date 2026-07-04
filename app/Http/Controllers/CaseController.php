@@ -7,6 +7,7 @@ use App\Models\CaseEvent;
 use App\Models\CaseFile;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\User;
 use App\Services\CaseEventService;
 use App\Services\EmployersClient;
 use App\Services\NoteTypeSyncService;
@@ -124,14 +125,20 @@ class CaseController extends Controller
                 'assigned_to' => $task->assignedUser?->name,
             ]);
 
+        $caseOfficers = User::query()
+            ->whereNotNull('current_role')
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
         return Inertia::render('cases/Show', [
-            'case' => $case->load(['employer', 'employee']),
+            'case' => $case->load(['employer', 'employee', 'assignedOfficer']),
             'case_type_label' => $case->case_type?->label(),
             'notes' => $notes,
             'writableNoteTypes' => $writableNoteTypes->values(),
             'timeline' => $timeline,
             'tasks' => $tasks,
             'taskTypes' => $taskTypes->values(),
+            'caseOfficers' => $caseOfficers,
             'can' => [
                 'manage_cases' => $user->can('manage-cases'),
                 'close_cases' => $user->can('close-cases'),
