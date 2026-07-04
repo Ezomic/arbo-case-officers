@@ -1,10 +1,27 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {
+    CalendarCheck,
+    Check,
+    Pencil,
+    TriangleAlert,
+    Trash2,
+} from '@lucide/vue';
+import { computed, ref } from 'vue';
+import CaseStatusBadge from '@/components/CaseStatusBadge.vue';
 import Heading from '@/components/Heading.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
@@ -12,8 +29,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { show as showEmployer } from '@/routes/employers';
-import { index } from '@/routes/cases';
+import { Textarea } from '@/components/ui/textarea';
+import { formatDate } from '@/lib/date';
 import {
     store as storeNote,
     update as updateNote,
@@ -24,7 +41,9 @@ import {
     complete as completeTask,
     destroy as destroyTask,
 } from '@/routes/case-tasks';
+import { close as closeCase, index } from '@/routes/cases';
 import { update as updateAssignment } from '@/routes/cases/assignment';
+import { show as showEmployer } from '@/routes/employers';
 
 type CaseFile = {
     id: string;
@@ -145,12 +164,41 @@ function submitEdit(note: Note) {
     });
 }
 
-function deleteNote(note: Note) {
-    if (!confirm('Delete this note?')) return;
-    useForm({}).delete(
-        destroyNote({ case: props.case.id, note: note.id }).url,
-        { preserveScroll: true },
-    );
+type PendingDelete =
+    { kind: 'note'; note: Note } | { kind: 'task'; task: Task } | null;
+
+const pendingDelete = ref<PendingDelete>(null);
+
+const pendingDeleteLabel = computed(() => {
+    if (pendingDelete.value?.kind === 'note') {
+        return `the ${pendingDelete.value.note.note_type_name} note by ${pendingDelete.value.note.author_name}`;
+    }
+
+    if (pendingDelete.value?.kind === 'task') {
+        return `the task “${pendingDelete.value.task.title}”`;
+    }
+
+    return '';
+});
+
+function confirmDelete() {
+    const pending = pendingDelete.value;
+
+    if (!pending) {
+        return;
+    }
+
+    const url =
+        pending.kind === 'note'
+            ? destroyNote({ case: props.case.id, note: pending.note.id }).url
+            : destroyTask({ case: props.case.id, task: pending.task.id }).url;
+
+    useForm({}).delete(url, {
+        preserveScroll: true,
+        onFinish: () => {
+            pendingDelete.value = null;
+        },
+    });
 }
 
 function submitTask() {
@@ -169,13 +217,25 @@ function markComplete(task: Task) {
     });
 }
 
-function deleteTask(task: Task) {
-    if (!confirm('Delete this task?')) return;
-    useForm({}).delete(
-        destroyTask({ case: props.case.id, task: task.id }).url,
-        { preserveScroll: true },
-    );
+const showCloseDialog = ref(false);
+const today = new Date().toISOString().slice(0, 10);
+const closeForm = useForm({ recovery_date: today });
+
+function submitClose() {
+    closeForm.post(closeCase(props.case.id).url, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showCloseDialog.value = false;
+        },
+    });
 }
+
+const isReturnDateOverdue = computed(
+    () =>
+        props.case.status === 'open' &&
+        props.case.expected_return_date !== null &&
+        props.case.expected_return_date < today,
+);
 
 const eventLabels: Record<string, string> = {
     case_opened: 'Case opened',
@@ -191,13 +251,26 @@ function eventLabel(event: string): string {
     return eventLabels[event] ?? event;
 }
 
-function formatDate(dateStr: string | null): string {
-    if (!dateStr) return '';
-    return new Date(dateStr).toLocaleDateString('nl-NL', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-    });
+const payloadLabels: Record<string, string> = {
+    opened_at: 'Opened',
+    closed_at: 'Closed',
+    return_date: 'Return date',
+    expected_return_date: 'Expected return date',
+    advice: 'Advice',
+    restrictions: 'Restrictions',
+    note_type: 'Note type',
+    assigned_to: 'Assigned to',
+    from: 'From',
+    to: 'To',
+    case_type: 'Case type',
+};
+
+function payloadLabel(key: string): string {
+    return payloadLabels[key] ?? key.replaceAll('_', ' ');
+}
+
+function payloadValue(value: string): string {
+    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? formatDate(value) : value;
 }
 </script>
 
@@ -207,10 +280,31 @@ function formatDate(dateStr: string | null): string {
     />
 
     <div class="flex flex-col gap-6 p-4">
-        <Heading
-            :title="`${props.case.employee.first_name} ${props.case.employee.last_name}`"
-            :description="props.case_type_label ?? undefined"
-        />
+        <div class="flex flex-wrap items-start justify-between gap-4">
+            <div class="flex items-start gap-3">
+                <Heading
+                    :title="`${props.case.employee.first_name} ${props.case.employee.last_name}`"
+                    :description="props.case_type_label ?? undefined"
+                />
+                <CaseStatusBadge class="mt-1" :status="props.case.status" />
+                <Badge
+                    v-if="isReturnDateOverdue"
+                    variant="outline"
+                    class="mt-1 border-transparent bg-destructive/10 text-destructive"
+                >
+                    <TriangleAlert />
+                    Return date overdue
+                </Badge>
+            </div>
+            <Button
+                v-if="props.case.status === 'open' && props.can.close_cases"
+                variant="outline"
+                @click="showCloseDialog = true"
+            >
+                <CalendarCheck class="size-4" />
+                Report recovered
+            </Button>
+        </div>
 
         <div class="grid gap-6 lg:grid-cols-3">
             <!-- Left column: case info + doctor outcomes -->
@@ -231,8 +325,8 @@ function formatDate(dateStr: string | null): string {
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Status</dt>
-                            <dd class="font-medium capitalize">
-                                {{ props.case.status }}
+                            <dd class="mt-0.5">
+                                <CaseStatusBadge :status="props.case.status" />
                             </dd>
                         </div>
                         <div>
@@ -302,10 +396,26 @@ function formatDate(dateStr: string | null): string {
                             <dt class="text-muted-foreground">
                                 Expected return date
                             </dt>
-                            <dd class="font-medium">
+                            <dd
+                                class="flex items-center gap-1.5 font-medium"
+                                :class="
+                                    isReturnDateOverdue
+                                        ? 'text-destructive'
+                                        : ''
+                                "
+                            >
+                                <TriangleAlert
+                                    v-if="isReturnDateOverdue"
+                                    class="size-3.5 shrink-0"
+                                />
                                 {{
                                     formatDate(props.case.expected_return_date)
                                 }}
+                                <span
+                                    v-if="isReturnDateOverdue"
+                                    class="font-normal"
+                                    >(overdue)</span
+                                >
                             </dd>
                         </div>
                         <div v-if="props.case.restrictions">
@@ -431,15 +541,24 @@ function formatDate(dateStr: string | null): string {
                                         variant="ghost"
                                         class="h-7 px-2 text-xs"
                                         @click="markComplete(task)"
-                                        >Done</Button
                                     >
+                                        <Check class="size-3.5" />
+                                        Done
+                                    </Button>
                                     <Button
-                                        size="sm"
+                                        size="icon"
                                         variant="ghost"
-                                        class="h-7 px-2 text-xs text-destructive"
-                                        @click="deleteTask(task)"
-                                        >Del</Button
+                                        class="size-7 text-destructive"
+                                        aria-label="Delete task"
+                                        @click="
+                                            pendingDelete = {
+                                                kind: 'task',
+                                                task,
+                                            }
+                                        "
                                     >
+                                        <Trash2 class="size-3.5" />
+                                    </Button>
                                 </div>
                             </div>
                             <p
@@ -515,17 +634,27 @@ function formatDate(dateStr: string | null): string {
                                         v-if="note.can_update"
                                         size="sm"
                                         variant="ghost"
+                                        class="h-7 px-2 text-xs"
                                         @click="startEdit(note)"
-                                        >Edit</Button
                                     >
+                                        <Pencil class="size-3.5" />
+                                        Edit
+                                    </Button>
                                     <Button
                                         v-if="note.can_delete"
-                                        size="sm"
+                                        size="icon"
                                         variant="ghost"
-                                        class="text-destructive"
-                                        @click="deleteNote(note)"
-                                        >Delete</Button
+                                        class="size-7 text-destructive"
+                                        aria-label="Delete note"
+                                        @click="
+                                            pendingDelete = {
+                                                kind: 'note',
+                                                note,
+                                            }
+                                        "
                                     >
+                                        <Trash2 class="size-3.5" />
+                                    </Button>
                                 </div>
                             </template>
                         </div>
@@ -606,7 +735,8 @@ function formatDate(dateStr: string | null): string {
                                     :key="key"
                                     class="text-xs text-muted-foreground"
                                 >
-                                    {{ key }}: {{ val }}
+                                    {{ payloadLabel(String(key)) }}:
+                                    {{ payloadValue(String(val)) }}
                                 </p>
                             </div>
                         </li>
@@ -615,4 +745,77 @@ function formatDate(dateStr: string | null): string {
             </div>
         </div>
     </div>
+
+    <Dialog v-model:open="showCloseDialog">
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Report recovered</DialogTitle>
+                <DialogDescription>
+                    Close the case for
+                    {{ props.case.employee.first_name }}
+                    {{ props.case.employee.last_name }} by registering the
+                    recovery date.
+                </DialogDescription>
+            </DialogHeader>
+            <form class="space-y-4" @submit.prevent="submitClose">
+                <div class="grid gap-2">
+                    <Label for="close_recovery_date">Recovery date</Label>
+                    <Input
+                        id="close_recovery_date"
+                        v-model="closeForm.recovery_date"
+                        type="date"
+                        required
+                    />
+                    <p
+                        v-if="closeForm.errors.recovery_date"
+                        class="text-sm text-destructive"
+                    >
+                        {{ closeForm.errors.recovery_date }}
+                    </p>
+                </div>
+                <DialogFooter>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        @click="showCloseDialog = false"
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        type="submit"
+                        variant="destructive"
+                        :disabled="closeForm.processing"
+                    >
+                        Close case
+                    </Button>
+                </DialogFooter>
+            </form>
+        </DialogContent>
+    </Dialog>
+
+    <Dialog
+        :open="pendingDelete !== null"
+        @update:open="(v) => !v && (pendingDelete = null)"
+    >
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>
+                    Delete
+                    {{ pendingDelete?.kind === 'note' ? 'note' : 'task' }}
+                </DialogTitle>
+                <DialogDescription>
+                    You are about to delete {{ pendingDeleteLabel }}. This
+                    cannot be undone.
+                </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+                <Button variant="ghost" @click="pendingDelete = null">
+                    Cancel
+                </Button>
+                <Button variant="destructive" @click="confirmDelete">
+                    Delete
+                </Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
 </template>
