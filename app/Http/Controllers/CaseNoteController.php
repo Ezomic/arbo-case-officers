@@ -15,12 +15,11 @@ class CaseNoteController extends Controller
 {
     public function store(Request $request, CaseFile $case, NoteTypeSyncService $noteTypeSync, CaseEventService $events): RedirectResponse
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        $noteTypes = $noteTypeSync->sync($user->tenant_id);
-        $writableIds = $noteTypes
-            ->filter(fn ($nt) => $nt->permissionFor($user->current_role ?? '')?->can_write === true)
-            ->pluck('id')
-            ->all();
+        $noteTypeSync->sync($user->tenant_id);
+
+        $writableIds = NoteType::query()->writableBy($user)->pluck('id')->all();
 
         $data = $request->validate([
             'note_type_id' => ['required', 'uuid', 'in:'.implode(',', $writableIds)],
@@ -34,8 +33,8 @@ class CaseNoteController extends Controller
             'body' => $data['body'],
         ]);
 
-        $noteType = NoteType::query()->find($data['note_type_id']);
-        $events->noteAdded($case->id, $noteType?->name ?? 'Note', $user);
+        $noteType = NoteType::query()->where('id', $data['note_type_id'])->firstOrFail();
+        $events->noteAdded($case->id, $noteType->name, $user);
 
         return to_route('cases.show', $case);
     }
