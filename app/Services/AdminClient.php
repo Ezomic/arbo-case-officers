@@ -24,4 +24,9 @@ class AdminClient extends InternalApiClient
     {
         return $this->get('contract-types', ['tenant_id' => $tenantId]);
     }
+
+    public function getNoteTypes(string $tenantId): array
+    {
+        return $this->get('note-types', ['tenant_id' => $tenantId, 'app_slug' => 'case-officers']);
+    }
 }
