@@ -156,7 +156,7 @@ class CaseController extends Controller
             'start_date' => ['required', 'date'],
         ]);
 
-        $employee = Employee::query()->findOrFail($data['employee_id']);
+        $employee = Employee::query()->findOrFail($request->string('employee_id')->value());
         $activeContract = Contract::query()
             ->where('employer_id', $employee->employer_id)
             ->where('status', 'active')
@@ -183,6 +183,11 @@ class CaseController extends Controller
         $events->caseOpened($fresh, Auth::user());
         $this->syncToEmployers($employers, $fresh, 'store');
 
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => "Absence reported for {$employee->first_name} {$employee->last_name}.",
+        ]);
+
         return to_route('cases.index');
     }
 
@@ -201,6 +206,13 @@ class CaseController extends Controller
             $events->returnDateSet($fresh, Auth::user());
         }
         $this->syncToEmployers($employers, $fresh, 'update');
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => $fresh->expected_return_date !== null
+                ? 'Expected return date saved.'
+                : 'Case updated.',
+        ]);
 
         return to_route('cases.show', $case);
     }
@@ -221,6 +233,11 @@ class CaseController extends Controller
         $fresh = $case->fresh();
         $events->caseClosed($fresh, Auth::user());
         $this->syncToEmployers($employers, $fresh, 'close');
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'Case closed — recovery registered.',
+        ]);
 
         return to_route('cases.show', $case);
     }

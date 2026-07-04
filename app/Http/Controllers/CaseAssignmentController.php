@@ -8,6 +8,7 @@ use App\Services\CaseEventService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CaseAssignmentController extends Controller
 {
@@ -20,7 +21,7 @@ class CaseAssignmentController extends Controller
         ]);
 
         $actor = Auth::user();
-        $newOfficer = User::query()->findOrFail($data['case_officer_user_id']);
+        $newOfficer = User::query()->findOrFail($request->string('case_officer_user_id')->value());
 
         $previousOfficerId = $case->case_officer_user_id;
         $case->update(['case_officer_user_id' => $newOfficer->id]);
@@ -35,6 +36,11 @@ class CaseAssignmentController extends Controller
                 $events->caseAssigned($case, $newOfficer, $actor);
             }
         }
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => "Case assigned to {$newOfficer->name}.",
+        ]);
 
         return to_route('cases.show', $case);
     }
