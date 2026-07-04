@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Form, Head, Link } from '@inertiajs/vue3';
 import { Plus } from '@lucide/vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -33,10 +33,33 @@ type CaseFile = {
     employee: { id: string; first_name: string; last_name: string };
 };
 
-defineProps<{
+type CaseTypeOption = {
+    value: string;
+    label: string;
+};
+
+const props = defineProps<{
     cases: CaseFile[];
     employees: Employee[];
+    caseTypes: CaseTypeOption[];
+    allowedTypesByEmployer: Record<string, string[]>;
 }>();
+
+const selectedEmployeeId = ref('');
+
+const availableCaseTypes = computed(() => {
+    if (!selectedEmployeeId.value) return props.caseTypes;
+    const employee = props.employees.find((e) => e.id === selectedEmployeeId.value);
+    if (!employee) return props.caseTypes;
+    const allowed = props.allowedTypesByEmployer[employee.employer_id];
+    if (!allowed || allowed.length === 0) return props.caseTypes;
+    return props.caseTypes.filter((t) => allowed.includes(t.value));
+});
+
+function caseTypeLabel(value: string | null): string {
+    if (!value) return '';
+    return props.caseTypes.find((t) => t.value === value)?.label ?? value;
+}
 
 defineOptions({
     layout: {
@@ -52,7 +75,7 @@ const showDialog = ref(false);
 
     <div class="flex flex-col gap-6 p-4">
         <div class="flex items-center justify-between">
-            <Heading title="Cases" description="Verzuim dossiers currently being managed" />
+            <Heading title="Cases" description="Dossiers currently being managed" />
             <Button variant="outline" size="icon" aria-label="Report absence" @click="showDialog = true">
                 <Plus class="size-4" />
             </Button>
@@ -67,7 +90,7 @@ const showDialog = ref(false);
             >
                 <div class="font-medium">
                     {{ caseFile.employee.first_name }} {{ caseFile.employee.last_name }}
-                    <span v-if="caseFile.case_type" class="font-normal text-muted-foreground">— {{ caseFile.case_type }}</span>
+                    <span v-if="caseFile.case_type" class="font-normal text-muted-foreground">— {{ caseTypeLabel(caseFile.case_type) }}</span>
                 </div>
                 <div class="text-sm text-muted-foreground">
                     {{ caseFile.employer.name }} · opened {{ caseFile.opened_at }} · {{ caseFile.status }}
@@ -97,6 +120,7 @@ const showDialog = ref(false);
                         name="employee_id"
                         required
                         class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
+                        @change="selectedEmployeeId = ($event.target as HTMLSelectElement).value"
                     >
                         <option value="" disabled selected>Select an employee</option>
                         <option v-for="employee in employees" :key="employee.id" :value="employee.id">
@@ -104,6 +128,21 @@ const showDialog = ref(false);
                         </option>
                     </select>
                     <InputError :message="errors.employee_id" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="case_type">Dossier type</Label>
+                    <select
+                        id="case_type"
+                        name="case_type"
+                        required
+                        class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
+                    >
+                        <option value="" disabled selected>Select a type</option>
+                        <option v-for="type in availableCaseTypes" :key="type.value" :value="type.value">
+                            {{ type.label }}
+                        </option>
+                    </select>
+                    <InputError :message="errors.case_type" />
                 </div>
                 <div class="grid gap-2">
                     <Label for="start_date">Start date</Label>
