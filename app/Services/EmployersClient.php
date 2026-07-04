@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CaseFile;
 use App\Models\Employer;
 use RobbinThijssen\IdentitySsoKit\Api\InternalApiClient;
 
@@ -26,6 +27,18 @@ class EmployersClient extends InternalApiClient
         $this->put("employers/{$employer->id}/contact-persons", [
             'tenant_id' => $employer->tenant_id,
             'contact_persons' => $persons,
+        ]);
+    }
+
+    public function syncCase(CaseFile $case): void
+    {
+        $this->put("cases/{$case->id}", [
+            'tenant_id' => $case->tenant_id,
+            'employee_id' => $case->employee_id,
+            'status' => $case->status,
+            'opened_at' => $case->opened_at->toDateString(),
+            'expected_return_date' => $case->expected_return_date?->toDateString(),
+            'closed_at' => $case->closed_at?->toDateString(),
         ]);
     }
 }

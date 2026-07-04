@@ -39,4 +39,12 @@ class CaseFile extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<CaseNote, $this>
+     */
+    public function notes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CaseNote::class, 'case_id');
+    }
 }
