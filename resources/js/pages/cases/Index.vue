@@ -3,6 +3,7 @@ import { Form, Head, Link } from '@inertiajs/vue3';
 import { ChevronRight, FolderOpen, Plus, Search } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import CaseStatusBadge from '@/components/CaseStatusBadge.vue';
+import EmployeeCombobox from '@/components/EmployeeCombobox.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Badge } from '@/components/ui/badge';
@@ -16,18 +17,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index, show, store } from '@/routes/cases';
+import { search as employeeSearch } from '@/routes/employees';
 
 type Employer = {
     id: string;
     name: string;
-};
-
-type Employee = {
-    id: string;
-    employer_id: string;
-    first_name: string;
-    last_name: string;
-    employer: Employer;
 };
 
 type CaseFile = {
@@ -47,27 +41,18 @@ type CaseTypeOption = {
 
 const props = defineProps<{
     cases: CaseFile[];
-    employees: Employee[];
     caseTypes: CaseTypeOption[];
     allowedTypesByEmployer: Record<string, string[]>;
 }>();
 
-const selectedEmployeeId = ref('');
+const selectedEmployerId = ref('');
 
 const availableCaseTypes = computed(() => {
-    if (!selectedEmployeeId.value) {
+    if (!selectedEmployerId.value) {
         return props.caseTypes;
     }
 
-    const employee = props.employees.find(
-        (e) => e.id === selectedEmployeeId.value,
-    );
-
-    if (!employee) {
-        return props.caseTypes;
-    }
-
-    const allowed = props.allowedTypesByEmployer[employee.employer_id];
+    const allowed = props.allowedTypesByEmployer[selectedEmployerId.value];
 
     if (!allowed || allowed.length === 0) {
         return props.caseTypes;
@@ -260,30 +245,17 @@ const filteredCases = computed(() => {
                 class="space-y-3"
             >
                 <div class="grid gap-2">
-                    <Label for="employee_id">Employee</Label>
-                    <select
-                        id="employee_id"
+                    <Label>Employee</Label>
+                    <EmployeeCombobox
                         name="employee_id"
-                        required
-                        class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
-                        @change="
-                            selectedEmployeeId = (
-                                $event.target as HTMLSelectElement
-                            ).value
+                        :search-url="employeeSearch().url"
+                        :error="errors.employee_id"
+                        @select="
+                            (item) =>
+                                (selectedEmployerId = item.employer_id ?? '')
                         "
-                    >
-                        <option value="" disabled selected>
-                            Select an employee
-                        </option>
-                        <option
-                            v-for="employee in employees"
-                            :key="employee.id"
-                            :value="employee.id"
-                        >
-                            {{ employee.first_name }} {{ employee.last_name }} —
-                            {{ employee.employer.name }}
-                        </option>
-                    </select>
+                        @clear="selectedEmployerId = ''"
+                    />
                     <InputError :message="errors.employee_id" />
                 </div>
                 <div class="grid gap-2">

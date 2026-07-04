@@ -39,6 +39,7 @@ class EmployeeController extends Controller
 
         return response()->json($employees->map(fn (Employee $e) => [
             'id' => $e->id,
+            'employer_id' => $e->employer_id,
             'label' => $this->buildLabel($e, $allUnits),
         ]));
     }

@@ -8,7 +8,12 @@ const props = defineProps<{
     error?: string;
 }>();
 
-type Result = { id: string; label: string };
+type Result = { id: string; employer_id?: string; label: string };
+
+const emit = defineEmits<{
+    select: [item: Result];
+    clear: [];
+}>();
 
 const query = ref('');
 const results = ref<Result[]>([]);
@@ -20,12 +25,18 @@ let debounceTimer: ReturnType<typeof setTimeout>;
 function onInput(e: Event) {
     const val = (e.target as HTMLInputElement).value;
     query.value = val;
+
+    if (selected.value !== null) {
+        emit('clear');
+    }
+
     selected.value = null;
     clearTimeout(debounceTimer);
     results.value = [];
 
     if (val.length < 3) {
         open.value = false;
+
         return;
     }
 
@@ -48,6 +59,7 @@ function select(item: Result) {
     selected.value = item;
     query.value = item.label;
     open.value = false;
+    emit('select', item);
 }
 
 function onBlur() {
