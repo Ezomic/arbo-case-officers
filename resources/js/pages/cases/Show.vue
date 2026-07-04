@@ -66,6 +66,7 @@ const props = defineProps<{
     timeline: TimelineEvent[];
     tasks: Task[];
     taskTypes: TaskType[];
+    can: { manage_cases: boolean; close_cases: boolean };
 }>();
 
 defineOptions({
@@ -214,7 +215,7 @@ function formatDate(dateStr: string | null): string {
                 <div class="rounded-lg border p-4">
                     <div class="mb-4 flex items-center justify-between">
                         <h2 class="font-medium">Tasks</h2>
-                        <Button v-if="props.case.status === 'open'" size="sm" variant="ghost" @click="showTaskForm = !showTaskForm">
+                        <Button v-if="props.case.status === 'open' && props.can.manage_cases" size="sm" variant="ghost" @click="showTaskForm = !showTaskForm">
                             {{ showTaskForm ? 'Cancel' : 'Add task' }}
                         </Button>
                     </div>
@@ -254,7 +255,7 @@ function formatDate(dateStr: string | null): string {
                                     <p v-if="task.due_date" class="text-muted-foreground text-xs">Due: {{ formatDate(task.due_date) }}</p>
                                     <p v-if="task.assigned_to" class="text-muted-foreground text-xs">Assigned to: {{ task.assigned_to }}</p>
                                 </div>
-                                <div class="flex shrink-0 gap-1">
+                                <div v-if="props.can.manage_cases" class="flex shrink-0 gap-1">
                                     <Button v-if="!task.completed_at" size="sm" variant="ghost" class="h-7 px-2 text-xs" @click="markComplete(task)">Done</Button>
                                     <Button size="sm" variant="ghost" class="text-destructive h-7 px-2 text-xs" @click="deleteTask(task)">Del</Button>
                                 </div>

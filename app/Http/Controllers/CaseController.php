@@ -132,11 +132,17 @@ class CaseController extends Controller
             'timeline' => $timeline,
             'tasks' => $tasks,
             'taskTypes' => $taskTypes->values(),
+            'can' => [
+                'manage_cases' => $user->can('manage-cases'),
+                'close_cases' => $user->can('close-cases'),
+            ],
         ]);
     }
 
     public function store(Request $request, EmployersClient $employers, CaseEventService $events): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $data = $request->validate([
             'employee_id' => ['required', 'uuid', 'exists:employees,id'],
             'case_type' => ['required', Rule::enum(CaseType::class)],
@@ -175,6 +181,8 @@ class CaseController extends Controller
 
     public function update(Request $request, CaseFile $case, EmployersClient $employers, CaseEventService $events): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $data = $request->validate([
             'expected_return_date' => ['nullable', 'date'],
         ]);
@@ -192,6 +200,8 @@ class CaseController extends Controller
 
     public function close(Request $request, CaseFile $case, EmployersClient $employers, CaseEventService $events): RedirectResponse
     {
+        $this->authorize('close-cases');
+
         $data = $request->validate([
             'recovery_date' => ['required', 'date'],
         ]);
