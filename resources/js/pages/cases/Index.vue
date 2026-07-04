@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index, show, store } from '@/routes/cases';
+import { formatDateTime } from '@/lib/date';
 
 type Employer = {
     id: string;
@@ -70,7 +71,7 @@ const showDialog = ref(false);
                     <span v-if="caseFile.case_type" class="font-normal text-muted-foreground">— {{ caseFile.case_type }}</span>
                 </div>
                 <div class="text-sm text-muted-foreground">
-                    {{ caseFile.employer.name }} · opened {{ caseFile.opened_at }} · {{ caseFile.status }}
+                    {{ caseFile.employer.name }} · opened {{ formatDateTime(caseFile.opened_at) }} · {{ caseFile.status }}
                 </div>
             </Link>
             <p v-if="cases.length === 0" class="text-sm text-muted-foreground">
