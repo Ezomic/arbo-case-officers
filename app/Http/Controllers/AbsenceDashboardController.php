@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CaseType;
 use App\Models\CaseFile;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
@@ -30,17 +31,18 @@ class AbsenceDashboardController extends Controller
             : null;
 
         $openByType = $openCases
-            ->groupBy('case_type')
+            ->groupBy(fn (CaseFile $case) => $case->case_type->value ?? 'unknown')
             ->map(fn ($group, $type) => [
-                'case_type' => $type,
+                'case_type' => $type === 'unknown' ? 'Unknown' : CaseType::from($type)->label(),
                 'count' => $group->count(),
             ])
+            ->sortByDesc('count')
             ->values();
 
         $topEmployers = CaseFile::query()
             ->where('cases.status', 'open')
             ->join('employers', 'cases.employer_id', '=', 'employers.id')
-            ->select('employers.name', DB::raw('count(*) as open_count'))
+            ->select('employers.id', 'employers.name', DB::raw('count(*) as open_count'))
             ->groupBy('employers.id', 'employers.name')
             ->orderByDesc('open_count')
             ->limit(10)
