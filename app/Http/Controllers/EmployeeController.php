@@ -67,15 +67,24 @@ class EmployeeController extends Controller
     /** @param Collection<string, OrganizationalUnit> $allUnits */
     private function findLegalEntity(?string $unitId, Collection $allUnits): ?string
     {
-        if ($unitId === null) return null;
+        if ($unitId === null) {
+            return null;
+        }
         $unit = $allUnits[$unitId] ?? null;
-        if ($unit === null) return null;
-        if ($unit->is_legal_entity) return $unit->name;
+        if ($unit === null) {
+            return null;
+        }
+        if ($unit->is_legal_entity) {
+            return $unit->name;
+        }
+
         return $this->findLegalEntity($unit->parent_id, $allUnits);
     }
 
     public function store(Request $request, Employer $employer, EmployeeImportService $service): RedirectResponse
     {
+        $this->authorize('manage-employees');
+
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
