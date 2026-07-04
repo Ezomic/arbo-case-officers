@@ -24,10 +24,15 @@ use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
  * @property \Illuminate\Support\Carbon|null $date_of_birth
  * @property string|null $gender
  * @property string|null $nationality
+ * @property string|null $address_line_1
+ * @property string|null $address_line_2
+ * @property string|null $postal_code
+ * @property string|null $city
+ * @property string|null $country
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
-#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'bsn', 'status', 'source', 'gender', 'nationality'])]
+#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'bsn', 'status', 'source', 'gender', 'nationality', 'address_line_1', 'address_line_2', 'postal_code', 'city', 'country'])]
 class Employee extends Model
 {
     use HasTenantScope, HasUuidPrimaryKey;
