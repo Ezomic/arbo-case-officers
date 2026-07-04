@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
-use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
+use App\Enums\CaseType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
+use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
 #[Fillable(['tenant_id', 'employer_id', 'employee_id', 'case_officer_user_id', 'case_type', 'status', 'opened_at', 'closed_at', 'advice', 'restrictions', 'expected_return_date'])]
 class CaseFile extends Model
@@ -18,6 +20,7 @@ class CaseFile extends Model
     protected function casts(): array
     {
         return [
+            'case_type' => CaseType::class,
             'opened_at' => 'datetime',
             'closed_at' => 'datetime',
             'expected_return_date' => 'date',
@@ -40,11 +43,15 @@ class CaseFile extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<CaseNote, $this>
-     */
-    public function notes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /** @return HasMany<CaseNote, $this> */
+    public function notes(): HasMany
     {
         return $this->hasMany(CaseNote::class, 'case_id');
+    }
+
+    /** @return HasMany<CaseTask, $this> */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(CaseTask::class, 'case_id');
     }
 }

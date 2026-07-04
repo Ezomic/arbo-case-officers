@@ -3,11 +3,13 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { show as showEmployer } from '@/routes/employers';
 import { index } from '@/routes/cases';
 import { store as storeNote, update as updateNote, destroy as destroyNote } from '@/routes/case-notes';
+import { store as storeTask, complete as completeTask, destroy as destroyTask } from '@/routes/case-tasks';
 
 type CaseFile = {
     id: string;
@@ -34,10 +36,19 @@ type Note = {
     created_at: string;
 };
 
-type NoteType = {
+type NoteType = { id: string; name: string };
+
+type Task = {
     id: string;
-    name: string;
+    task_type_name: string | null;
+    title: string;
+    description: string | null;
+    due_date: string | null;
+    completed_at: string | null;
+    assigned_to: string | null;
 };
+
+type TaskType = { id: string; name: string };
 
 type TimelineEvent = {
     id: number;
@@ -53,6 +64,8 @@ const props = defineProps<{
     notes: Note[];
     writableNoteTypes: NoteType[];
     timeline: TimelineEvent[];
+    tasks: Task[];
+    taskTypes: TaskType[];
 }>();
 
 defineOptions({
@@ -64,6 +77,7 @@ defineOptions({
 });
 
 const editingNoteId = ref<string | null>(null);
+const showTaskForm = ref(false);
 
 const noteForm = useForm({
     note_type_id: props.writableNoteTypes[0]?.id ?? '',
@@ -71,6 +85,13 @@ const noteForm = useForm({
 });
 
 const editForm = useForm({ body: '' });
+
+const taskForm = useForm({
+    task_type_id: '',
+    title: '',
+    description: '',
+    due_date: '',
+});
 
 function submitNote() {
     noteForm.post(storeNote(props.case.id).url, {
@@ -96,6 +117,22 @@ function deleteNote(note: Note) {
     useForm({}).delete(destroyNote({ case: props.case.id, note: note.id }).url, { preserveScroll: true });
 }
 
+function submitTask() {
+    taskForm.post(storeTask(props.case.id).url, {
+        preserveScroll: true,
+        onSuccess: () => { taskForm.reset(); showTaskForm.value = false; },
+    });
+}
+
+function markComplete(task: Task) {
+    useForm({}).post(completeTask({ case: props.case.id, task: task.id }).url, { preserveScroll: true });
+}
+
+function deleteTask(task: Task) {
+    if (!confirm('Delete this task?')) return;
+    useForm({}).delete(destroyTask({ case: props.case.id, task: task.id }).url, { preserveScroll: true });
+}
+
 const eventLabels: Record<string, string> = {
     case_opened: 'Case opened',
     case_closed: 'Case closed',
@@ -108,7 +145,8 @@ function eventLabel(event: string): string {
     return eventLabels[event] ?? event;
 }
 
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string | null): string {
+    if (!dateStr) return '';
     return new Date(dateStr).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 </script>
@@ -170,6 +208,60 @@ function formatDate(dateStr: string): string {
                             <dd class="font-medium">{{ props.case.advice }}</dd>
                         </div>
                     </dl>
+                </div>
+
+                <!-- Tasks -->
+                <div class="rounded-lg border p-4">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h2 class="font-medium">Tasks</h2>
+                        <Button v-if="props.case.status === 'open'" size="sm" variant="ghost" @click="showTaskForm = !showTaskForm">
+                            {{ showTaskForm ? 'Cancel' : 'Add task' }}
+                        </Button>
+                    </div>
+
+                    <div v-if="showTaskForm" class="mb-4 space-y-3 rounded-md border p-3">
+                        <Select v-if="props.taskTypes.length" v-model="taskForm.task_type_id">
+                            <SelectTrigger>
+                                <SelectValue placeholder="Task type (optional)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem v-for="tt in props.taskTypes" :key="tt.id" :value="tt.id">
+                                    {{ tt.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Input v-model="taskForm.title" placeholder="Title" />
+                        <Textarea v-model="taskForm.description" placeholder="Description (optional)" rows="2" />
+                        <Input v-model="taskForm.due_date" type="date" />
+                        <Button size="sm" :disabled="taskForm.processing" @click="submitTask">Add</Button>
+                    </div>
+
+                    <div v-if="props.tasks.length === 0 && !showTaskForm" class="text-sm text-muted-foreground">
+                        No tasks yet.
+                    </div>
+
+                    <div class="space-y-2">
+                        <div
+                            v-for="task in props.tasks"
+                            :key="task.id"
+                            class="rounded-md border p-3 text-sm"
+                            :class="task.completed_at ? 'opacity-60' : ''"
+                        >
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="min-w-0 flex-1">
+                                    <p class="font-medium" :class="task.completed_at ? 'line-through' : ''">{{ task.title }}</p>
+                                    <p v-if="task.task_type_name" class="text-muted-foreground text-xs">{{ task.task_type_name }}</p>
+                                    <p v-if="task.due_date" class="text-muted-foreground text-xs">Due: {{ formatDate(task.due_date) }}</p>
+                                    <p v-if="task.assigned_to" class="text-muted-foreground text-xs">Assigned to: {{ task.assigned_to }}</p>
+                                </div>
+                                <div class="flex shrink-0 gap-1">
+                                    <Button v-if="!task.completed_at" size="sm" variant="ghost" class="h-7 px-2 text-xs" @click="markComplete(task)">Done</Button>
+                                    <Button size="sm" variant="ghost" class="text-destructive h-7 px-2 text-xs" @click="deleteTask(task)">Del</Button>
+                                </div>
+                            </div>
+                            <p v-if="task.description" class="text-muted-foreground mt-1 text-xs">{{ task.description }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -236,7 +328,7 @@ function formatDate(dateStr: string): string {
                         No events recorded yet.
                     </div>
 
-                    <ol class="relative border-l border-border space-y-4 pl-4">
+                    <ol class="relative space-y-4 border-l border-border pl-4">
                         <li v-for="event in props.timeline" :key="event.id" class="relative">
                             <span class="absolute -left-[1.15rem] mt-1 flex h-3 w-3 items-center justify-center rounded-full bg-primary ring-2 ring-background" />
                             <p class="text-sm font-medium leading-tight">{{ eventLabel(event.event) }}</p>
