@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CaseApiController;
+use App\Http\Controllers\Api\ContactPersonApiController;
 use App\Http\Controllers\Api\ContractApiController;
 use App\Http\Controllers\Api\EmployeeApiController;
 use App\Http\Controllers\Api\EmployeeImportApiController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\Api\EmployerApiController;
 use App\Http\Controllers\Api\OrganizationalUnitApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:api-client', 'throttle:api-client'])->group(function () {
+Route::middleware(['auth:api-client', 'throttle:api-internal'])->group(function () {
     Route::post('cases', [CaseApiController::class, 'store'])
         ->middleware('ability:cases:create');
 
@@ -31,6 +32,9 @@ Route::middleware(['auth:api-client', 'throttle:api-client'])->group(function ()
         ->middleware('ability:cases:write');
 
     Route::get('employers/{employer}', [EmployerApiController::class, 'show'])
+        ->middleware('ability:employers:read');
+
+    Route::get('employers/{employer}/contact-persons', [ContactPersonApiController::class, 'index'])
         ->middleware('ability:employers:read');
 
     Route::get('employers/{employer}/contracts', [ContractApiController::class, 'index'])
