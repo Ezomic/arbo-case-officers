@@ -24,17 +24,9 @@ class CaseController extends Controller
 {
     public function index(): Response
     {
-        $employees = Employee::query()
-            ->with('employer:id,name')
-            ->orderBy('first_name')
-            ->get(['id', 'employer_id', 'first_name', 'last_name']);
-
         // For each employer, resolve the active contract's case type allowlist.
         // An empty array means the contract type has no restrictions — all types allowed.
-        $employerIds = $employees->pluck('employer_id')->unique()->all();
-
         $allowedTypesByEmployer = Contract::query()
-            ->whereIn('employer_id', $employerIds)
             ->where('status', 'active')
             ->whereNotNull('contract_type_id')
             ->with('contractType.caseTypes')
@@ -53,7 +45,6 @@ class CaseController extends Controller
                 ->with(['employer', 'employee'])
                 ->latest('opened_at')
                 ->get(),
-            'employees' => $employees,
             'caseTypes' => array_map(
                 fn (CaseType $t) => ['value' => $t->value, 'label' => $t->label()],
                 CaseType::cases(),
