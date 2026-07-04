@@ -21,6 +21,8 @@ class EmployerController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorize('manage-employers');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'kvk_number' => ['nullable', 'string', 'max:255'],
