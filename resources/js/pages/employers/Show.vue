@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index } from '@/routes/employers';
+import { formatDate } from '@/lib/date';
 import { store as storeContract } from '@/routes/contracts';
 import { store as storeEmployee } from '@/routes/employees';
 import { store as storeOrganizationalUnit } from '@/routes/organizational-units';
@@ -89,8 +90,8 @@ const showEmployeeDialog = ref(false);
 
                 <ul class="space-y-2">
                     <li v-for="contract in contracts" :key="contract.id" class="text-sm">
-                        {{ contract.contract_type_label }} — {{ contract.start_date }}
-                        <span v-if="contract.end_date"> to {{ contract.end_date }}</span>
+                        {{ contract.contract_type_label }} — {{ formatDate(contract.start_date) }}
+                        <span v-if="contract.end_date"> to {{ formatDate(contract.end_date) }}</span>
                         ({{ contract.status }})
                     </li>
                     <li v-if="contracts.length === 0" class="text-sm text-muted-foreground">

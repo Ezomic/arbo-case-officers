@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { FolderOpen, LayoutGrid, Users } from '@lucide/vue';
+import { FolderOpen, LayoutGrid, Users, UserCog } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
+import CaseSidebarActions from '@/components/CaseSidebarActions.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -16,6 +17,7 @@ import {
 import { index as casesIndex } from '@/routes/cases';
 import { index as employeesIndex } from '@/routes/employees';
 import { index as employersIndex } from '@/routes/employers';
+import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -33,6 +35,11 @@ const mainNavItems: NavItem[] = [
         title: 'Cases',
         href: casesIndex(),
         icon: FolderOpen,
+    },
+    {
+        title: 'Users',
+        href: usersIndex(),
+        icon: UserCog,
     },
 ];
 </script>
@@ -56,6 +63,7 @@ const mainNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
+            <CaseSidebarActions />
             <NavUser />
         </SidebarFooter>
     </Sidebar>
