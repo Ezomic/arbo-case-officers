@@ -7,6 +7,7 @@ use App\Models\CaseTask;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Inertia\Inertia;
 
 class CaseTaskController extends Controller
 {
@@ -25,6 +26,8 @@ class CaseTaskController extends Controller
             'case_id' => $case->id,
         ]);
 
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Task added.']);
+
         return to_route('cases.show', $case);
     }
 
@@ -39,6 +42,8 @@ class CaseTaskController extends Controller
 
         $task->update($data);
 
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Task updated.']);
+
         return to_route('cases.show', $case);
     }
 
@@ -46,12 +51,16 @@ class CaseTaskController extends Controller
     {
         $task->update(['completed_at' => Carbon::now()]);
 
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Task completed.']);
+
         return to_route('cases.show', $case);
     }
 
     public function destroy(CaseFile $case, CaseTask $task): RedirectResponse
     {
         $task->delete();
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Task deleted.']);
 
         return to_route('cases.show', $case);
     }
