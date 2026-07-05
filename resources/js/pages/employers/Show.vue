@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
-import { Plus } from '@lucide/vue';
+import { Plus, Trash2 } from '@lucide/vue';
 import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -10,9 +10,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { index } from '@/routes/employers';
+import { destroy as destroyContactPerson, store as storeContactPerson } from '@/routes/contact-persons';
 import { store as storeContract } from '@/routes/contracts';
 import { store as storeEmployee } from '@/routes/employees';
+import { index } from '@/routes/employers';
 import { store as storeOrganizationalUnit } from '@/routes/organizational-units';
 
 type Employer = {
@@ -53,12 +54,21 @@ type Employee = {
     organizational_unit: OrganizationalUnit | null;
 };
 
+type ContactPerson = {
+    id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+    job_title: string | null;
+};
+
 defineProps<{
     employer: Employer;
     contracts: Contract[];
     contractTypes: ContractType[];
     organizationalUnits: OrganizationalUnit[];
     employees: Employee[];
+    contactPersons: ContactPerson[];
 }>();
 
 defineOptions({
@@ -70,6 +80,7 @@ defineOptions({
 const showContractDialog = ref(false);
 const showUnitDialog = ref(false);
 const showEmployeeDialog = ref(false);
+const showContactDialog = ref(false);
 </script>
 
 <template>
@@ -108,6 +119,37 @@ const showEmployeeDialog = ref(false);
                 </div>
 
                 <OrganizationalUnitTree :units="organizationalUnits" :employer-id="employer.id" />
+            </div>
+
+            <div class="rounded-lg border p-4 md:col-span-2">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="font-medium">Contact persons</h2>
+                    <Button variant="ghost" size="icon" aria-label="Add contact person" @click="showContactDialog = true">
+                        <Plus class="size-4" />
+                    </Button>
+                </div>
+
+                <ul class="space-y-2">
+                    <li v-for="cp in contactPersons" :key="cp.id" class="flex items-center justify-between text-sm">
+                        <div>
+                            <span class="font-medium">{{ cp.name }}</span>
+                            <span v-if="cp.job_title" class="ml-2 text-muted-foreground">{{ cp.job_title }}</span>
+                            <span v-if="cp.email" class="ml-2 text-muted-foreground">· {{ cp.email }}</span>
+                            <span v-if="cp.phone" class="ml-2 text-muted-foreground">· {{ cp.phone }}</span>
+                        </div>
+                        <Form
+                            v-bind="destroyContactPerson.form({ employer: employer.id, contactPerson: cp.id })"
+                            class="ml-2"
+                        >
+                            <Button type="submit" variant="ghost" size="icon" aria-label="Delete">
+                                <Trash2 class="size-4 text-destructive" />
+                            </Button>
+                        </Form>
+                    </li>
+                    <li v-if="contactPersons.length === 0" class="text-sm text-muted-foreground">
+                        No contact persons yet.
+                    </li>
+                </ul>
             </div>
 
             <div class="rounded-lg border p-4 md:col-span-2">
@@ -260,6 +302,42 @@ const showEmployeeDialog = ref(false);
                     <InputError :message="errors.organizational_unit_id" />
                 </div>
                 <Button type="submit" :disabled="processing">Add employee</Button>
+            </Form>
+        </DialogContent>
+    </Dialog>
+
+    <Dialog v-model:open="showContactDialog">
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Add contact person</DialogTitle>
+            </DialogHeader>
+            <Form
+                v-bind="storeContactPerson.form({ employer: employer.id })"
+                v-slot="{ errors, processing }"
+                :reset-on-success="['name', 'email', 'phone', 'job_title']"
+                class="space-y-3"
+            >
+                <div class="grid gap-2">
+                    <Label for="cp_name">Name</Label>
+                    <Input id="cp_name" name="name" required />
+                    <InputError :message="errors.name" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="cp_job_title">Job title</Label>
+                    <Input id="cp_job_title" name="job_title" />
+                    <InputError :message="errors.job_title" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="cp_email">Email</Label>
+                    <Input id="cp_email" type="email" name="email" />
+                    <InputError :message="errors.email" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="cp_phone">Phone</Label>
+                    <Input id="cp_phone" name="phone" />
+                    <InputError :message="errors.phone" />
+                </div>
+                <Button type="submit" :disabled="processing">Add contact person</Button>
             </Form>
         </DialogContent>
     </Dialog>

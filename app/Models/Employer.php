@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
+/**
+ * @property string $id
+ */
 #[Fillable(['tenant_id', 'name', 'kvk_number', 'address_line_1', 'address_line_2', 'postal_code', 'city', 'status'])]
 class Employer extends Model
 {
@@ -56,5 +59,13 @@ class Employer extends Model
     public function defaultOrganizationalUnit(): ?OrganizationalUnit
     {
         return $this->organizationalUnits()->whereNull('parent_id')->oldest()->first();
+    }
+
+    /**
+     * @return HasMany<ContactPerson, $this>
+     */
+    public function contactPersons(): HasMany
+    {
+        return $this->hasMany(ContactPerson::class);
     }
 }
