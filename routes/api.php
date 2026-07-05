@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CaseApiController;
+use App\Http\Controllers\Api\ContactPersonApiController;
 use App\Http\Controllers\Api\ContractApiController;
 use App\Http\Controllers\Api\EmployeeApiController;
 use App\Http\Controllers\Api\EmployeeImportApiController;
@@ -25,6 +26,9 @@ Route::middleware(['auth:api-client', 'throttle:60,1'])->group(function () {
         ->middleware('ability:employers:read');
 
     Route::get('employers/{employer}/contracts', [ContractApiController::class, 'index'])
+        ->middleware('ability:employers:read');
+
+    Route::get('employers/{employer}/contact-persons', [ContactPersonApiController::class, 'index'])
         ->middleware('ability:employers:read');
 
     Route::get('employers/{employer}/organizational-units', [OrganizationalUnitApiController::class, 'index'])

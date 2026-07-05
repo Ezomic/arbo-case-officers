@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CaseController;
+use App\Http\Controllers\ContactPersonController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployerController;
@@ -21,6 +22,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('employers', [EmployerController::class, 'index'])->name('employers.index');
     Route::post('employers', [EmployerController::class, 'store'])->name('employers.store');
     Route::get('employers/{employer}', [EmployerController::class, 'show'])->name('employers.show');
+
+    Route::post('employers/{employer}/contact-persons', [ContactPersonController::class, 'store'])->name('contact-persons.store');
+    Route::put('employers/{employer}/contact-persons/{contactPerson}', [ContactPersonController::class, 'update'])->name('contact-persons.update');
+    Route::delete('employers/{employer}/contact-persons/{contactPerson}', [ContactPersonController::class, 'destroy'])->name('contact-persons.destroy');
 
     Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
 
