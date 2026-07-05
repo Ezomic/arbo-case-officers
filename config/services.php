@@ -40,4 +40,9 @@ return [
         'token' => env('ADMIN_SERVICE_TOKEN'),
     ],
 
+    'employers' => [
+        'base_url' => env('EMPLOYERS_BASE_URL', 'https://employers.test'),
+        'token' => env('EMPLOYERS_SERVICE_TOKEN'),
+    ],
+
 ];
