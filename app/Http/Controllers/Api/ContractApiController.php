@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contract;
 use App\Models\Employer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ContractApiController extends Controller
 {
+    /**
+     * @return Collection<int, Contract>
+     */
     public function index(Request $request, string $employer): Collection
     {
         $tenantId = $request->validate(['tenant_id' => ['required', 'uuid']])['tenant_id'];

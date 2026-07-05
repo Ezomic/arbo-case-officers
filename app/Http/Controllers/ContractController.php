@@ -23,7 +23,7 @@ class ContractController extends Controller
             'end_date' => ['nullable', 'date', 'after:start_date'],
         ]);
 
-        $contractType = ContractType::withoutGlobalScope('tenant')->findOrFail($data['contract_type_id']);
+        $contractType = ContractType::withoutGlobalScope('tenant')->findOrFail((string) $data['contract_type_id']);
 
         $employer->contracts()->create([
             ...$data,

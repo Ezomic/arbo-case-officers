@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 
 class EmployeeApiController extends Controller
 {
+    /**
+     * @return Collection<int, Employee>
+     */
     public function index(Request $request, string $employer): Collection
     {
         $tenantId = $request->validate(['tenant_id' => ['required', 'uuid']])['tenant_id'];

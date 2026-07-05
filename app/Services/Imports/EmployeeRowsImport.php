@@ -13,8 +13,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
  */
 class EmployeeRowsImport implements ToCollection, WithHeadingRow
 {
+    /** @var Collection<int, array<array-key, mixed>> */
     public Collection $rows;
 
+    /**
+     * @param  Collection<int, Collection<array-key, mixed>>  $rows
+     */
     public function collection(Collection $rows): void
     {
         $this->rows = $rows->map(fn (Collection $row) => $row->toArray());

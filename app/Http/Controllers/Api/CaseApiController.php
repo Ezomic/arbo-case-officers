@@ -26,7 +26,7 @@ class CaseApiController extends Controller
 
         $employee = Employee::withoutGlobalScope('tenant')
             ->where('tenant_id', $data['tenant_id'])
-            ->findOrFail($data['employee_id']);
+            ->findOrFail((string) $data['employee_id']);
 
         return CaseFile::query()->create([
             'tenant_id' => $data['tenant_id'],
@@ -42,6 +42,9 @@ class CaseApiController extends Controller
      * medical file belongs to. Only structured, non-medical fields
      * (advice/restrictions/expected_return_date) are exposed here; the
      * actual medical detail never leaves the Doctors app.
+     */
+    /**
+     * @return Collection<int, CaseFile>
      */
     public function index(Request $request): Collection
     {

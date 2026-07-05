@@ -2,6 +2,7 @@
 
 namespace App\Services\Imports;
 
+use RuntimeException;
 use SimpleXMLElement;
 
 /**
@@ -16,7 +17,13 @@ class XmlEmployeeImportParser
      */
     public function parse(string $path): array
     {
-        $xml = new SimpleXMLElement(file_get_contents($path));
+        $contents = file_get_contents($path);
+
+        if ($contents === false) {
+            throw new RuntimeException("Unable to read import file at \"{$path}\".");
+        }
+
+        $xml = new SimpleXMLElement($contents);
 
         $rows = [];
 

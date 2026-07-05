@@ -36,7 +36,7 @@ class EmployerController extends Controller
         return Inertia::render('employers/Show', [
             'employer' => $employer,
             'contracts' => $employer->contracts()->latest()->get(),
-            'contractTypes' => $contractTypeSync->sync(Auth::user()->tenant_id),
+            'contractTypes' => $contractTypeSync->sync(Auth::guard('web')->user()->tenant_id),
             'organizationalUnits' => $employer->organizationalUnits()->oldest()->get(),
             'employees' => $employer->employees()->with('organizationalUnit')->latest()->get(),
             'contactPersons' => $employer->contactPersons()->oldest()->get(),
