@@ -45,14 +45,14 @@ class CaseController extends Controller
             'start_date' => ['required', 'date'],
         ]);
 
-        $employee = Employee::query()->findOrFail($data['employee_id']);
+        $employee = Employee::query()->findOrFail((string) $data['employee_id']);
 
         CaseFile::query()->create([
             'employer_id' => $employee->employer_id,
             'employee_id' => $employee->id,
             'case_type' => 'verzuim',
             'opened_at' => $data['start_date'],
-            'tenant_id' => Auth::user()->tenant_id,
+            'tenant_id' => Auth::guard('web')->user()->tenant_id,
             'case_officer_user_id' => Auth::id(),
         ]);
 

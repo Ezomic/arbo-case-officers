@@ -20,6 +20,9 @@ class AdminClient extends InternalApiClient
         return config('services.admin.token');
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getContractTypes(string $tenantId): array
     {
         return $this->get('contract-types', ['tenant_id' => $tenantId]);

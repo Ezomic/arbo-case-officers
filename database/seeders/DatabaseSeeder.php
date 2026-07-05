@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder
 
         $token = $client->createToken('employers-service', ['employers:read', 'employees:write', 'cases:create'])->plainTextToken;
 
-        $this->command?->info("employers-service token (put in employers/.env as CASE_OFFICERS_SERVICE_TOKEN):\n{$token}");
+        $this->command->info("employers-service token (put in employers/.env as CASE_OFFICERS_SERVICE_TOKEN):\n{$token}");
 
         $doctorsClient = ApiClient::query()->firstOrCreate(['name' => 'doctors-service']);
 
         $doctorsToken = $doctorsClient->createToken('doctors-service', ['cases:read', 'cases:write'])->plainTextToken;
 
-        $this->command?->info("doctors-service token (put in doctors/.env as CASE_OFFICERS_SERVICE_TOKEN):\n{$doctorsToken}");
+        $this->command->info("doctors-service token (put in doctors/.env as CASE_OFFICERS_SERVICE_TOKEN):\n{$doctorsToken}");
     }
 }

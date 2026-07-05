@@ -98,7 +98,7 @@ class EmployeeImportService
         $query = $employer->organizationalUnits()->withoutGlobalScope('tenant');
 
         $unit = match (true) {
-            $unitId !== null => (clone $query)->find($unitId),
+            $unitId !== null => (clone $query)->find((string) $unitId),
             $unitName !== null => (clone $query)->where('name', $unitName)->first(),
             default => null,
         };
