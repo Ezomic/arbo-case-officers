@@ -78,7 +78,7 @@ store.form = storeForm
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-export const show = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -93,7 +93,7 @@ show.definition = {
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-show.url = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+show.url = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { employeeImport: args }
     }
@@ -126,7 +126,7 @@ show.url = (args: { employeeImport: number | { id: number } } | [employeeImport:
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-show.get = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -136,7 +136,7 @@ show.get = (args: { employeeImport: number | { id: number } } | [employeeImport:
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-show.head = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -146,7 +146,7 @@ show.head = (args: { employeeImport: number | { id: number } } | [employeeImport
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-const showForm = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -156,7 +156,7 @@ const showForm = (args: { employeeImport: number | { id: number } } | [employeeI
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-showForm.get = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -166,7 +166,7 @@ showForm.get = (args: { employeeImport: number | { id: number } } | [employeeImp
 * @see app/Http/Controllers/Api/EmployeeImportApiController.php:49
 * @route '/api/employee-imports/{employeeImport}'
 */
-showForm.head = (args: { employeeImport: number | { id: number } } | [employeeImport: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { employeeImport: string | number | { id: string | number } } | [employeeImport: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',

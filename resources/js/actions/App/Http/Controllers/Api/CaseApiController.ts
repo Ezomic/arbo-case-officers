@@ -57,7 +57,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -72,7 +72,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -81,7 +81,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -91,7 +91,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -101,7 +101,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -111,7 +111,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -121,7 +121,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::index
-* @see app/Http/Controllers/Api/CaseApiController.php:46
+* @see app/Http/Controllers/Api/CaseApiController.php:49
 * @route '/api/cases'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,7 +138,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 export const show = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -153,7 +153,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 show.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -180,7 +180,7 @@ show.url = (args: { case: string | number } | [caseParam: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 show.get = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -190,7 +190,7 @@ show.get = (args: { case: string | number } | [caseParam: string | number ] | st
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 show.head = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -200,7 +200,7 @@ show.head = (args: { case: string | number } | [caseParam: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 const showForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -210,7 +210,7 @@ const showForm = (args: { case: string | number } | [caseParam: string | number 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 showForm.get = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -220,7 +220,7 @@ showForm.get = (args: { case: string | number } | [caseParam: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::show
-* @see app/Http/Controllers/Api/CaseApiController.php:58
+* @see app/Http/Controllers/Api/CaseApiController.php:61
 * @route '/api/cases/{case}'
 */
 showForm.head = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -237,7 +237,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:77
 * @route '/api/cases/{case}'
 */
 export const update = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -252,7 +252,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:77
 * @route '/api/cases/{case}'
 */
 update.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -279,7 +279,7 @@ update.url = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:77
 * @route '/api/cases/{case}'
 */
 update.put = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -289,7 +289,7 @@ update.put = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:77
 * @route '/api/cases/{case}'
 */
 const updateForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -304,7 +304,7 @@ const updateForm = (args: { case: string | number } | [caseParam: string | numbe
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::update
-* @see app/Http/Controllers/Api/CaseApiController.php:74
+* @see app/Http/Controllers/Api/CaseApiController.php:77
 * @route '/api/cases/{case}'
 */
 updateForm.put = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
