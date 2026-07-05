@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 export const index = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 index.url = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -43,7 +43,7 @@ index.url = (args: { employer: string | number } | [employer: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 index.get = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ index.get = (args: { employer: string | number } | [employer: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 index.head = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ index.head = (args: { employer: string | number } | [employer: string | number ]
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 const indexForm = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ const indexForm = (args: { employer: string | number } | [employer: string | num
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 indexForm.get = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -83,7 +83,7 @@ indexForm.get = (args: { employer: string | number } | [employer: string | numbe
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::index
-* @see app/Http/Controllers/Api/EmployeeApiController.php:17
+* @see app/Http/Controllers/Api/EmployeeApiController.php:14
 * @route '/api/employers/{employer}/employees'
 */
 indexForm.head = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -100,7 +100,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::store
-* @see app/Http/Controllers/Api/EmployeeApiController.php:28
+* @see app/Http/Controllers/Api/EmployeeApiController.php:25
 * @route '/api/employers/{employer}/employees'
 */
 export const store = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -115,7 +115,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::store
-* @see app/Http/Controllers/Api/EmployeeApiController.php:28
+* @see app/Http/Controllers/Api/EmployeeApiController.php:25
 * @route '/api/employers/{employer}/employees'
 */
 store.url = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -142,7 +142,7 @@ store.url = (args: { employer: string | number } | [employer: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::store
-* @see app/Http/Controllers/Api/EmployeeApiController.php:28
+* @see app/Http/Controllers/Api/EmployeeApiController.php:25
 * @route '/api/employers/{employer}/employees'
 */
 store.post = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -152,7 +152,7 @@ store.post = (args: { employer: string | number } | [employer: string | number ]
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::store
-* @see app/Http/Controllers/Api/EmployeeApiController.php:28
+* @see app/Http/Controllers/Api/EmployeeApiController.php:25
 * @route '/api/employers/{employer}/employees'
 */
 const storeForm = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -162,7 +162,7 @@ const storeForm = (args: { employer: string | number } | [employer: string | num
 
 /**
 * @see \App\Http\Controllers\Api\EmployeeApiController::store
-* @see app/Http/Controllers/Api/EmployeeApiController.php:28
+* @see app/Http/Controllers/Api/EmployeeApiController.php:25
 * @route '/api/employers/{employer}/employees'
 */
 storeForm.post = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

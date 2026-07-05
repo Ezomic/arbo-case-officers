@@ -141,7 +141,7 @@ store.form = storeForm
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-export const show = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -156,7 +156,7 @@ show.definition = {
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-show.url = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+show.url = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { case: args }
     }
@@ -189,7 +189,7 @@ show.url = (args: { case: string | number | { id: string | number } } | [casePar
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-show.get = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -199,7 +199,7 @@ show.get = (args: { case: string | number | { id: string | number } } | [casePar
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-show.head = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -209,7 +209,7 @@ show.head = (args: { case: string | number | { id: string | number } } | [casePa
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-const showForm = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -219,7 +219,7 @@ const showForm = (args: { case: string | number | { id: string | number } } | [c
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-showForm.get = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -229,7 +229,7 @@ showForm.get = (args: { case: string | number | { id: string | number } } | [cas
 * @see app/Http/Controllers/CaseController.php:29
 * @route '/cases/{case}'
 */
-showForm.head = (args: { case: string | number | { id: string | number } } | [caseParam: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
