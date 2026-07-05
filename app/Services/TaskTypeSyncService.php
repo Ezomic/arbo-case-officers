@@ -12,20 +12,23 @@ class TaskTypeSyncService
     /** @return Collection<int, TaskType> */
     public function sync(string $tenantId): Collection
     {
-        $remote = $this->client->getTaskTypes($tenantId);
-        $remoteIds = array_column($remote, 'id');
+        $remote = rescue(fn () => $this->client->getTaskTypes($tenantId), null);
 
-        foreach ($remote as $tt) {
-            TaskType::withoutGlobalScope('tenant')->updateOrCreate(
-                ['id' => $tt['id']],
-                ['tenant_id' => $tt['tenant_id'], 'name' => $tt['name'], 'description' => $tt['description']],
-            );
+        if ($remote !== null) {
+            $remoteIds = array_column($remote, 'id');
+
+            foreach ($remote as $tt) {
+                TaskType::withoutGlobalScope('tenant')->updateOrCreate(
+                    ['id' => $tt['id']],
+                    ['tenant_id' => $tt['tenant_id'], 'name' => $tt['name'], 'description' => $tt['description']],
+                );
+            }
+
+            TaskType::withoutGlobalScope('tenant')
+                ->where('tenant_id', $tenantId)
+                ->whereNotIn('id', $remoteIds)
+                ->delete();
         }
-
-        TaskType::withoutGlobalScope('tenant')
-            ->where('tenant_id', $tenantId)
-            ->whereNotIn('id', $remoteIds)
-            ->delete();
 
         return TaskType::withoutGlobalScope('tenant')
             ->where('tenant_id', $tenantId)
