@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
+/**
+ * @property string $id
+ * @property string $tenant_id
+ * @property string $employer_id
+ * @property string|null $parent_id
+ * @property string $name
+ * @property bool $is_legal_entity
+ * @property string|null $kvk_number
+ */
 #[Fillable(['tenant_id', 'employer_id', 'parent_id', 'name', 'is_legal_entity', 'kvk_number'])]
 class OrganizationalUnit extends Model
 {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
@@ -17,11 +18,14 @@ class Employee extends Model
     {
         return [
             'date_of_birth' => 'date',
-            'bsn'           => 'encrypted',
+            'bsn' => 'encrypted',
         ];
     }
 
-    public function cases(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * @return HasMany<CaseFile, $this>
+     */
+    public function cases(): HasMany
     {
         return $this->hasMany(CaseFile::class);
     }
