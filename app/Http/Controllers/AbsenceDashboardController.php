@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\CaseType;
 use App\Models\CaseFile;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,7 +13,6 @@ class AbsenceDashboardController extends Controller
 {
     public function index(): Response
     {
-        $tenantId = Auth::user()->tenant_id;
         $now = CarbonImmutable::now();
 
         $openCases = CaseFile::query()

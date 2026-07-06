@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CaseAssignmentController::update
-* @see app/Http/Controllers/CaseAssignmentController.php:14
+* @see app/Http/Controllers/CaseAssignmentController.php:15
 * @route '/cases/{case}/assignment'
 */
 export const update = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseAssignmentController::update
-* @see app/Http/Controllers/CaseAssignmentController.php:14
+* @see app/Http/Controllers/CaseAssignmentController.php:15
 * @route '/cases/{case}/assignment'
 */
 update.url = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ update.url = (args: { case: string | { id: string } } | [caseParam: string | { i
 
 /**
 * @see \App\Http\Controllers\CaseAssignmentController::update
-* @see app/Http/Controllers/CaseAssignmentController.php:14
+* @see app/Http/Controllers/CaseAssignmentController.php:15
 * @route '/cases/{case}/assignment'
 */
 update.put = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -59,7 +59,7 @@ update.put = (args: { case: string | { id: string } } | [caseParam: string | { i
 
 /**
 * @see \App\Http\Controllers\CaseAssignmentController::update
-* @see app/Http/Controllers/CaseAssignmentController.php:14
+* @see app/Http/Controllers/CaseAssignmentController.php:15
 * @route '/cases/{case}/assignment'
 */
 const updateForm = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -74,7 +74,7 @@ const updateForm = (args: { case: string | { id: string } } | [caseParam: string
 
 /**
 * @see \App\Http\Controllers\CaseAssignmentController::update
-* @see app/Http/Controllers/CaseAssignmentController.php:14
+* @see app/Http/Controllers/CaseAssignmentController.php:15
 * @route '/cases/{case}/assignment'
 */
 updateForm.put = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -20,6 +20,7 @@ class CaseAssignmentController extends Controller
             'case_officer_user_id' => ['required', 'uuid', 'exists:users,id'],
         ]);
 
+        /** @var User $actor */
         $actor = Auth::user();
         $newOfficer = User::query()->findOrFail($request->string('case_officer_user_id')->value());
 

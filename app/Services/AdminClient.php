@@ -28,11 +28,17 @@ class AdminClient extends InternalApiClient
         return $this->get('contract-types', ['tenant_id' => $tenantId]);
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getNoteTypes(string $tenantId): array
     {
         return $this->get('note-types', ['tenant_id' => $tenantId, 'app_slug' => 'case-officers']);
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getTaskTypes(string $tenantId): array
     {
         return $this->get('task-types', ['tenant_id' => $tenantId]);
@@ -41,10 +47,10 @@ class AdminClient extends InternalApiClient
     /** @return list<string> */
     public function getRolePermissions(string $tenantId, string $roleName): array
     {
-        return $this->get('role-permissions', [
+        return array_values($this->get('role-permissions', [
             'tenant_id' => $tenantId,
             'role_name' => $roleName,
             'app_slug' => 'case-officers',
-        ]);
+        ]));
     }
 }

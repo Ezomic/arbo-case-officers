@@ -34,9 +34,8 @@ class CaseController extends Controller
             ->groupBy('employer_id')
             ->map(function ($contracts) {
                 $contract = $contracts->first();
-                $caseTypes = $contract->contractType?->caseTypes ?? collect();
 
-                return $caseTypes->pluck('case_type')->all();
+                return $contract?->contractType?->caseTypes->pluck('case_type')->all() ?? [];
             })
             ->all();
 
@@ -67,6 +66,7 @@ class CaseController extends Controller
                 'occurred_at' => $e->occurred_at,
             ]);
 
+        /** @var User $user */
         $user = Auth::user();
         $noteTypes = $noteTypeSync->sync($user->tenant_id);
         $userRole = $user->current_role ?? '';
@@ -123,7 +123,7 @@ class CaseController extends Controller
 
         return Inertia::render('cases/Show', [
             'case' => $case->load(['employer', 'employee', 'assignedOfficer']),
-            'case_type_label' => $case->case_type?->label(),
+            'case_type_label' => $case->case_type->label(),
             'notes' => $notes,
             'writableNoteTypes' => $writableNoteTypes->values(),
             'timeline' => $timeline,
@@ -140,6 +140,9 @@ class CaseController extends Controller
     public function store(Request $request, EmployersClient $employers, CaseEventService $events): RedirectResponse
     {
         $this->authorize('manage-cases');
+
+        /** @var User $user */
+        $user = Auth::user();
 
         $data = $request->validate([
             'employee_id' => ['required', 'uuid', 'exists:employees,id'],
@@ -166,12 +169,12 @@ class CaseController extends Controller
             'employee_id' => $employee->id,
             'case_type' => $data['case_type'],
             'opened_at' => $data['start_date'],
-            'tenant_id' => Auth::guard('web')->user()->tenant_id,
-            'case_officer_user_id' => Auth::id(),
+            'tenant_id' => $user->tenant_id,
+            'case_officer_user_id' => $user->id,
         ]);
 
         $fresh = $case->fresh();
-        $events->caseOpened($fresh, Auth::user());
+        $events->caseOpened($fresh, $user);
         $this->syncToEmployers($employers, $fresh, 'store');
 
         Inertia::flash('toast', [
@@ -190,11 +193,14 @@ class CaseController extends Controller
             'expected_return_date' => ['nullable', 'date'],
         ]);
 
+        /** @var User $user */
+        $user = Auth::user();
+
         $case->update($data);
 
         $fresh = $case->fresh();
         if ($fresh->expected_return_date !== null) {
-            $events->returnDateSet($fresh, Auth::user());
+            $events->returnDateSet($fresh, $user);
         }
         $this->syncToEmployers($employers, $fresh, 'update');
 
@@ -216,13 +222,16 @@ class CaseController extends Controller
             'recovery_date' => ['required', 'date'],
         ]);
 
+        /** @var User $user */
+        $user = Auth::user();
+
         $case->update([
             'status' => 'closed',
             'closed_at' => $data['recovery_date'],
         ]);
 
         $fresh = $case->fresh();
-        $events->caseClosed($fresh, Auth::user());
+        $events->caseClosed($fresh, $user);
         $this->syncToEmployers($employers, $fresh, 'close');
 
         Inertia::flash('toast', [

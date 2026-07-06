@@ -222,7 +222,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\UserController::destroy
-* @see app/Http/Controllers/UserController.php:57
+* @see app/Http/Controllers/UserController.php:60
 * @route '/users/{uuid}'
 */
 export const destroy = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -237,7 +237,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\UserController::destroy
-* @see app/Http/Controllers/UserController.php:57
+* @see app/Http/Controllers/UserController.php:60
 * @route '/users/{uuid}'
 */
 destroy.url = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -264,7 +264,7 @@ destroy.url = (args: { uuid: string | number } | [uuid: string | number ] | stri
 
 /**
 * @see \App\Http\Controllers\UserController::destroy
-* @see app/Http/Controllers/UserController.php:57
+* @see app/Http/Controllers/UserController.php:60
 * @route '/users/{uuid}'
 */
 destroy.delete = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -274,7 +274,7 @@ destroy.delete = (args: { uuid: string | number } | [uuid: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\UserController::destroy
-* @see app/Http/Controllers/UserController.php:57
+* @see app/Http/Controllers/UserController.php:60
 * @route '/users/{uuid}'
 */
 const destroyForm = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -289,7 +289,7 @@ const destroyForm = (args: { uuid: string | number } | [uuid: string | number ] 
 
 /**
 * @see \App\Http\Controllers\UserController::destroy
-* @see app/Http/Controllers/UserController.php:57
+* @see app/Http/Controllers/UserController.php:60
 * @route '/users/{uuid}'
 */
 destroyForm.delete = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

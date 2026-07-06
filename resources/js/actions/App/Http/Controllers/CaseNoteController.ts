@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
-* @see app/Http/Controllers/CaseNoteController.php:16
+* @see app/Http/Controllers/CaseNoteController.php:18
 * @route '/cases/{case}/notes'
 */
 export const store = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
-* @see app/Http/Controllers/CaseNoteController.php:16
+* @see app/Http/Controllers/CaseNoteController.php:18
 * @route '/cases/{case}/notes'
 */
 store.url = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { case: string | { id: string } } | [caseParam: string | { id
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
-* @see app/Http/Controllers/CaseNoteController.php:16
+* @see app/Http/Controllers/CaseNoteController.php:18
 * @route '/cases/{case}/notes'
 */
 store.post = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { case: string | { id: string } } | [caseParam: string | { i
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
-* @see app/Http/Controllers/CaseNoteController.php:16
+* @see app/Http/Controllers/CaseNoteController.php:18
 * @route '/cases/{case}/notes'
 */
 const storeForm = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { case: string | { id: string } } | [caseParam: string 
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::store
-* @see app/Http/Controllers/CaseNoteController.php:16
+* @see app/Http/Controllers/CaseNoteController.php:18
 * @route '/cases/{case}/notes'
 */
 storeForm.post = (args: { case: string | { id: string } } | [caseParam: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::update
-* @see app/Http/Controllers/CaseNoteController.php:42
+* @see app/Http/Controllers/CaseNoteController.php:46
 * @route '/cases/{case}/notes/{note}'
 */
 export const update = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -96,7 +96,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::update
-* @see app/Http/Controllers/CaseNoteController.php:42
+* @see app/Http/Controllers/CaseNoteController.php:46
 * @route '/cases/{case}/notes/{note}'
 */
 update.url = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -126,7 +126,7 @@ update.url = (args: { case: string | { id: string }, note: string | { id: string
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::update
-* @see app/Http/Controllers/CaseNoteController.php:42
+* @see app/Http/Controllers/CaseNoteController.php:46
 * @route '/cases/{case}/notes/{note}'
 */
 update.put = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -136,7 +136,7 @@ update.put = (args: { case: string | { id: string }, note: string | { id: string
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::update
-* @see app/Http/Controllers/CaseNoteController.php:42
+* @see app/Http/Controllers/CaseNoteController.php:46
 * @route '/cases/{case}/notes/{note}'
 */
 const updateForm = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -151,7 +151,7 @@ const updateForm = (args: { case: string | { id: string }, note: string | { id: 
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::update
-* @see app/Http/Controllers/CaseNoteController.php:42
+* @see app/Http/Controllers/CaseNoteController.php:46
 * @route '/cases/{case}/notes/{note}'
 */
 updateForm.put = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -168,7 +168,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::destroy
-* @see app/Http/Controllers/CaseNoteController.php:55
+* @see app/Http/Controllers/CaseNoteController.php:61
 * @route '/cases/{case}/notes/{note}'
 */
 export const destroy = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -183,7 +183,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::destroy
-* @see app/Http/Controllers/CaseNoteController.php:55
+* @see app/Http/Controllers/CaseNoteController.php:61
 * @route '/cases/{case}/notes/{note}'
 */
 destroy.url = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -213,7 +213,7 @@ destroy.url = (args: { case: string | { id: string }, note: string | { id: strin
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::destroy
-* @see app/Http/Controllers/CaseNoteController.php:55
+* @see app/Http/Controllers/CaseNoteController.php:61
 * @route '/cases/{case}/notes/{note}'
 */
 destroy.delete = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -223,7 +223,7 @@ destroy.delete = (args: { case: string | { id: string }, note: string | { id: st
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::destroy
-* @see app/Http/Controllers/CaseNoteController.php:55
+* @see app/Http/Controllers/CaseNoteController.php:61
 * @route '/cases/{case}/notes/{note}'
 */
 const destroyForm = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -238,7 +238,7 @@ const destroyForm = (args: { case: string | { id: string }, note: string | { id:
 
 /**
 * @see \App\Http\Controllers\CaseNoteController::destroy
-* @see app/Http/Controllers/CaseNoteController.php:55
+* @see app/Http/Controllers/CaseNoteController.php:61
 * @route '/cases/{case}/notes/{note}'
 */
 destroyForm.delete = (args: { case: string | { id: string }, note: string | { id: string } } | [caseParam: string | { id: string }, note: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

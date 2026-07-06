@@ -107,7 +107,7 @@ it('falls back to the local cache and does not throw when the remote call fails'
         $mock->shouldReceive('getNoteTypes')
             ->once()
             ->with($tenantId)
-            ->andThrow(new InternalApiException('admin unavailable'));
+            ->andThrow(InternalApiException::fromResponse('GET', 'note-types', 500, 'admin unavailable'));
     });
 
     $service = app(NoteTypeSyncService::class);

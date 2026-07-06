@@ -38,7 +38,7 @@ class GdprExportController extends Controller
                 'id' => $case->id,
                 'case_type' => $case->case_type,
                 'status' => $case->status,
-                'opened_at' => $case->opened_at?->toDateString(),
+                'opened_at' => $case->opened_at->toDateString(),
                 'closed_at' => $case->closed_at?->toDateString(),
                 'expected_return_date' => $case->expected_return_date?->toDateString(),
                 'advice' => $case->advice,
@@ -53,8 +53,11 @@ class GdprExportController extends Controller
             now()->format('Y-m-d'),
         );
 
+        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        abort_if($json === false, 500, 'Failed to generate GDPR export.');
+
         return response(
-            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+            $json,
             200,
             [
                 'Content-Type' => 'application/json',

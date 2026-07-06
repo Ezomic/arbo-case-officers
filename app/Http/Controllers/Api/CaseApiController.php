@@ -125,7 +125,7 @@ class CaseApiController extends Controller
 
         $employee = Employee::withoutGlobalScope('tenant')
             ->where('tenant_id', $data['tenant_id'])
-            ->findOrFail($data['employee_id']);
+            ->findOrFail((string) $data['employee_id']);
 
         CaseFile::withoutGlobalScope('tenant')->updateOrCreate(
             ['id' => $case],

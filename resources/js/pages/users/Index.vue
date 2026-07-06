@@ -20,7 +20,7 @@ type IdentityUser = {
     created_at: string;
 };
 
-const props = defineProps<{ users: IdentityUser[] }>();
+defineProps<{ users: IdentityUser[] }>();
 
 const page = usePage<{ flash?: { temporaryPassword?: string } }>();
 

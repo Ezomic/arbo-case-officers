@@ -63,6 +63,9 @@ class CaseEventService
         ], $actor);
     }
 
+    /**
+     * @param  array<string, mixed>  $payload
+     */
     private function record(string $caseId, string $event, array $payload, User $actor): void
     {
         CaseEvent::create([

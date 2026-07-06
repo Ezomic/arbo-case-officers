@@ -60,7 +60,8 @@ class HandleInertiaRequests extends Middleware
                             ? ['first_name' => $case->employee->first_name, 'last_name' => $case->employee->last_name]
                             : null,
                         'expected_return_date' => $case->expected_return_date?->toDateString(),
-                    ]);
+                    ])
+                    ->all();
             },
             'sidebarCaseTypes' => array_map(
                 fn (CaseType $t) => ['value' => $t->value, 'label' => $t->label()],

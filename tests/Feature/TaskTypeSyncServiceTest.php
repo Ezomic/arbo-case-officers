@@ -99,7 +99,7 @@ it('falls back to the local cache and does not throw when the remote call fails'
         $mock->shouldReceive('getTaskTypes')
             ->once()
             ->with($tenantId)
-            ->andThrow(new InternalApiException('admin unavailable'));
+            ->andThrow(InternalApiException::fromResponse('GET', 'task-types', 500, 'admin unavailable'));
     });
 
     $service = app(TaskTypeSyncService::class);
