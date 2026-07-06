@@ -16,11 +16,18 @@ class IdentityClient extends InternalApiClient
         return config('services.identity.token');
     }
 
+    /**
+     * @param  array<int, string>  $userTypes
+     * @return array<int, array<string, mixed>>
+     */
     public function getUsers(string $tenantId, array $userTypes): array
     {
         return $this->get('users', ['tenant_id' => $tenantId, 'user_types' => $userTypes]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function createUser(string $tenantId, string $name, string $email, string $userTypeId, ?string $scopeId = null): array
     {
         return $this->post('users', [
@@ -32,13 +39,17 @@ class IdentityClient extends InternalApiClient
         ]);
     }
 
-    public function updateUser(string $uuid, array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public function updateUser(string $tenantId, string $uuid, array $data): array
     {
-        return $this->put("users/{$uuid}", $data);
+        return $this->put("users/{$uuid}", [...$data, 'tenant_id' => $tenantId]);
     }
 
-    public function deleteUser(string $uuid): void
+    public function deleteUser(string $tenantId, string $uuid): void
     {
-        $this->delete("users/{$uuid}");
+        $this->delete("users/{$uuid}", ['tenant_id' => $tenantId]);
     }
 }
