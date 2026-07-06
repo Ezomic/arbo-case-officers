@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\CaseType;
 use App\Http\Controllers\Controller;
 use App\Models\CaseFile;
 use App\Models\Employee;
+use App\Services\CaseEventService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class CaseApiController extends Controller
 {
@@ -32,7 +36,7 @@ class CaseApiController extends Controller
             'tenant_id' => $data['tenant_id'],
             'employer_id' => $employee->employer_id,
             'employee_id' => $employee->id,
-            'case_type' => 'verzuim',
+            'case_type' => CaseType::Verzuim,
             'opened_at' => $data['start_date'],
         ]);
     }
@@ -68,13 +72,79 @@ class CaseApiController extends Controller
             ->findOrFail($case);
     }
 
-    /**
-     * Doctors pushes structured, non-medical outcomes back here after
-     * recording the actual medical detail in its own isolated database —
-     * re-checking tenant_id against the case row itself rather than
-     * trusting the caller.
-     */
-    public function update(Request $request, string $case): CaseFile
+    public function mutate(Request $request, string $case): CaseFile
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'expected_return_date' => ['nullable', 'date'],
+        ]);
+
+        $caseFile = CaseFile::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->where('status', 'open')
+            ->findOrFail($case);
+
+        $caseFile->update([
+            'expected_return_date' => $data['expected_return_date'] ?? null,
+        ]);
+
+        return $caseFile;
+    }
+
+    public function close(Request $request, string $case): CaseFile
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'recovery_date' => ['required', 'date'],
+        ]);
+
+        $caseFile = CaseFile::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->where('status', 'open')
+            ->findOrFail($case);
+
+        $caseFile->update([
+            'status' => 'closed',
+            'closed_at' => $data['recovery_date'],
+        ]);
+
+        return $caseFile;
+    }
+
+    public function sync(Request $request, string $case): Response
+    {
+        $data = $request->validate([
+            'tenant_id' => ['required', 'uuid'],
+            'employee_id' => ['required', 'uuid'],
+            'case_type' => ['nullable', Rule::enum(CaseType::class)],
+            'status' => ['required', 'string'],
+            'opened_at' => ['required', 'date'],
+            'expected_return_date' => ['nullable', 'date'],
+            'closed_at' => ['nullable', 'date'],
+        ]);
+
+        $employee = Employee::withoutGlobalScope('tenant')
+            ->where('tenant_id', $data['tenant_id'])
+            ->findOrFail((string) $data['employee_id']);
+
+        CaseFile::withoutGlobalScope('tenant')->updateOrCreate(
+            ['id' => $case],
+            [
+                'tenant_id' => $data['tenant_id'],
+                'employer_id' => $employee->employer_id,
+                'employee_id' => $data['employee_id'],
+                'case_type' => $data['case_type'] ?? CaseType::Verzuim->value,
+                'status' => $data['status'],
+                'opened_at' => $data['opened_at'],
+                'expected_return_date' => $data['expected_return_date'],
+                'closed_at' => $data['closed_at'],
+            ],
+        );
+
+        return response()->noContent();
+    }
+
+    public function update(Request $request, string $case, CaseEventService $events): CaseFile
     {
         $data = $request->validate([
             'tenant_id' => ['required', 'uuid'],
@@ -92,6 +162,8 @@ class CaseApiController extends Controller
             'restrictions' => $data['restrictions'] ?? null,
             'expected_return_date' => $data['expected_return_date'] ?? null,
         ]);
+
+        $events->outcomeShared($caseFile->fresh());
 
         return $caseFile;
     }

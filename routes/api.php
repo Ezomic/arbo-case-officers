@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\EmployerApiController;
 use App\Http\Controllers\Api\OrganizationalUnitApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:api-client', 'throttle:60,1'])->group(function () {
+Route::middleware(['auth:api-client', 'throttle:api-internal'])->group(function () {
     Route::post('cases', [CaseApiController::class, 'store'])
         ->middleware('ability:cases:create');
 
@@ -19,10 +19,22 @@ Route::middleware(['auth:api-client', 'throttle:60,1'])->group(function () {
     Route::get('cases/{case}', [CaseApiController::class, 'show'])
         ->middleware('ability:cases:read');
 
-    Route::put('cases/{case}', [CaseApiController::class, 'update'])
+    Route::put('cases/{case}', [CaseApiController::class, 'sync'])
+        ->middleware('ability:cases:write');
+
+    Route::patch('cases/{case}', [CaseApiController::class, 'update'])
+        ->middleware('ability:cases:write');
+
+    Route::post('cases/{case}/mutate', [CaseApiController::class, 'mutate'])
+        ->middleware('ability:cases:write');
+
+    Route::post('cases/{case}/close', [CaseApiController::class, 'close'])
         ->middleware('ability:cases:write');
 
     Route::get('employers/{employer}', [EmployerApiController::class, 'show'])
+        ->middleware('ability:employers:read');
+
+    Route::get('employers/{employer}/contact-persons', [ContactPersonApiController::class, 'index'])
         ->middleware('ability:employers:read');
 
     Route::get('employers/{employer}/contracts', [ContractApiController::class, 'index'])

@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { formatDate } from '@/lib/date';
 import { destroy as destroyContactPerson, store as storeContactPerson } from '@/routes/contact-persons';
 import { store as storeContract } from '@/routes/contracts';
 import { store as storeEmployee } from '@/routes/employees';
@@ -100,8 +101,8 @@ const showContactDialog = ref(false);
 
                 <ul class="space-y-2">
                     <li v-for="contract in contracts" :key="contract.id" class="text-sm">
-                        {{ contract.contract_type_label }} — {{ contract.start_date }}
-                        <span v-if="contract.end_date"> to {{ contract.end_date }}</span>
+                        {{ contract.contract_type_label }} — {{ formatDate(contract.start_date) }}
+                        <span v-if="contract.end_date"> to {{ formatDate(contract.end_date) }}</span>
                         ({{ contract.status }})
                     </li>
                     <li v-if="contracts.length === 0" class="text-sm text-muted-foreground">

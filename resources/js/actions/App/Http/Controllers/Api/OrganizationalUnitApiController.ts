@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 export const index = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 index.url = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -43,7 +43,7 @@ index.url = (args: { employer: string | number } | [employer: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 index.get = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ index.get = (args: { employer: string | number } | [employer: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 index.head = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ index.head = (args: { employer: string | number } | [employer: string | number ]
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 const indexForm = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ const indexForm = (args: { employer: string | number } | [employer: string | num
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 indexForm.get = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -83,7 +83,7 @@ indexForm.get = (args: { employer: string | number } | [employer: string | numbe
 
 /**
 * @see \App\Http\Controllers\Api\OrganizationalUnitApiController::index
-* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:12
+* @see app/Http/Controllers/Api/OrganizationalUnitApiController.php:16
 * @route '/api/employers/{employer}/organizational-units'
 */
 indexForm.head = (args: { employer: string | number } | [employer: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
