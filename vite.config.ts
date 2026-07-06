@@ -29,7 +29,6 @@ export default defineConfig({
         }),
         wayfinder({
             formVariants: true,
-            command: '"/Users/robbinthijssen/Library/Application Support/Herd/bin/php84" artisan wayfinder:generate',
         }),
     ],
 });
