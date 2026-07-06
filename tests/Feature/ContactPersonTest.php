@@ -1,13 +1,27 @@
 <?php
 
 use App\Models\Employer;
+use App\Models\RolePermission;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+
+function caseOfficerWithManageEmployers(): User
+{
+    $user = User::factory()->create();
+
+    RolePermission::query()->create([
+        'tenant_id' => $user->tenant_id,
+        'role_name' => $user->current_role,
+        'permission' => 'Manage employers',
+    ]);
+
+    return $user;
+}
 
 test('a case officer can add a contact person to an employer, which pushes a sync to employers', function () {
     Http::fake(['*/employers/*/contact-persons' => Http::response([], 200)]);
 
-    $user = User::factory()->create();
+    $user = caseOfficerWithManageEmployers();
     $this->actingAs($user)->post('/employers', ['name' => 'Acme Corp'])->assertRedirect();
     $employer = Employer::query()->where('name', 'Acme Corp')->firstOrFail();
 
@@ -29,7 +43,7 @@ test('a case officer can add a contact person to an employer, which pushes a syn
 test('a case officer can delete a contact person, which pushes a sync to employers', function () {
     Http::fake(['*/employers/*/contact-persons' => Http::response([], 200)]);
 
-    $user = User::factory()->create();
+    $user = caseOfficerWithManageEmployers();
     $this->actingAs($user)->post('/employers', ['name' => 'Acme Corp']);
     $employer = Employer::query()->where('name', 'Acme Corp')->firstOrFail();
     $contactPerson = $employer->contactPersons()->create(['name' => 'Jane Doe']);
@@ -41,7 +55,7 @@ test('a case officer can delete a contact person, which pushes a sync to employe
 });
 
 test('a contact person belonging to a different employer cannot be updated or deleted through the wrong employer', function () {
-    $user = User::factory()->create();
+    $user = caseOfficerWithManageEmployers();
     $this->actingAs($user)->post('/employers', ['name' => 'Acme Corp']);
     $this->actingAs($user)->post('/employers', ['name' => 'Other Corp']);
 
@@ -57,7 +71,7 @@ test('a contact person belonging to a different employer cannot be updated or de
 });
 
 test('the employer show page includes contact persons', function () {
-    $user = User::factory()->create();
+    $user = caseOfficerWithManageEmployers();
     $this->actingAs($user)->post('/employers', ['name' => 'Acme Corp']);
     $employer = Employer::query()->where('name', 'Acme Corp')->firstOrFail();
     $employer->contactPersons()->create(['name' => 'Jane Doe']);

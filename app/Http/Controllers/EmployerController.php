@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employer;
+use App\Models\User;
 use App\Services\ContractTypeSyncService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class EmployerController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorize('manage-employers');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'kvk_number' => ['nullable', 'string', 'max:255'],
@@ -33,10 +36,13 @@ class EmployerController extends Controller
 
     public function show(Employer $employer, ContractTypeSyncService $contractTypeSync): Response
     {
+        /** @var User $user */
+        $user = Auth::guard('web')->user();
+
         return Inertia::render('employers/Show', [
             'employer' => $employer,
             'contracts' => $employer->contracts()->latest()->get(),
-            'contractTypes' => $contractTypeSync->sync(Auth::guard('web')->user()->tenant_id),
+            'contractTypes' => $contractTypeSync->sync($user->tenant_id),
             'organizationalUnits' => $employer->organizationalUnits()->oldest()->get(),
             'employees' => $employer->employees()->with('organizationalUnit')->latest()->get(),
             'contactPersons' => $employer->contactPersons()->oldest()->get(),
