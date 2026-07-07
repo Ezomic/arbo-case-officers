@@ -17,6 +17,8 @@ class EmployeeController extends Controller
 {
     public function index(): Response
     {
+        $this->authorize('view-employees');
+
         return Inertia::render('employees/Index', [
             'employees' => Employee::query()
                 ->with(['employer', 'organizationalUnit'])
@@ -27,6 +29,8 @@ class EmployeeController extends Controller
 
     public function search(Request $request): JsonResponse
     {
+        $this->authorize('view-employees');
+
         $q = $request->validate(['q' => ['required', 'string', 'min:3']])['q'];
 
         $employees = Employee::query()

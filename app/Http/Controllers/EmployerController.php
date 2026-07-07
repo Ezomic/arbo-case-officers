@@ -15,6 +15,8 @@ class EmployerController extends Controller
 {
     public function index(): Response
     {
+        $this->authorize('view-employers');
+
         return Inertia::render('employers/Index', [
             'employers' => Employer::query()->latest()->get(),
         ]);
@@ -36,6 +38,8 @@ class EmployerController extends Controller
 
     public function show(Employer $employer, ContractTypeSyncService $contractTypeSync): Response
     {
+        $this->authorize('view-employers');
+
         /** @var User $user */
         $user = Auth::guard('web')->user();
 
