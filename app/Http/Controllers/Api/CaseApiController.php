@@ -62,12 +62,9 @@ class CaseApiController extends Controller
             ->get();
     }
 
-    public function show(Request $request, string $case): CaseFile
+    public function show(string $case): CaseFile
     {
-        $tenantId = $request->validate(['tenant_id' => ['required', 'uuid']])['tenant_id'];
-
         return CaseFile::withoutGlobalScope('tenant')
-            ->where('tenant_id', $tenantId)
             ->with(['employer:id,name', 'employee:id,first_name,last_name'])
             ->findOrFail($case);
     }
@@ -75,12 +72,10 @@ class CaseApiController extends Controller
     public function mutate(Request $request, string $case): CaseFile
     {
         $data = $request->validate([
-            'tenant_id' => ['required', 'uuid'],
             'expected_return_date' => ['nullable', 'date'],
         ]);
 
         $caseFile = CaseFile::withoutGlobalScope('tenant')
-            ->where('tenant_id', $data['tenant_id'])
             ->where('status', 'open')
             ->findOrFail($case);
 
@@ -94,12 +89,10 @@ class CaseApiController extends Controller
     public function close(Request $request, string $case): CaseFile
     {
         $data = $request->validate([
-            'tenant_id' => ['required', 'uuid'],
             'recovery_date' => ['required', 'date'],
         ]);
 
         $caseFile = CaseFile::withoutGlobalScope('tenant')
-            ->where('tenant_id', $data['tenant_id'])
             ->where('status', 'open')
             ->findOrFail($case);
 
@@ -111,6 +104,13 @@ class CaseApiController extends Controller
         return $caseFile;
     }
 
+    /**
+     * Unlike show/mutate/close/update, this may create a case for the
+     * first time — there's no existing row yet to derive tenant scope
+     * from. Instead we verify the claimed tenant_id actually owns the
+     * referenced employee before touching anything, same as
+     * ContactPersonApiController::index scopes Employer by tenant_id.
+     */
     public function sync(Request $request, string $case): Response
     {
         $data = $request->validate([
@@ -147,14 +147,12 @@ class CaseApiController extends Controller
     public function update(Request $request, string $case, CaseEventService $events): CaseFile
     {
         $data = $request->validate([
-            'tenant_id' => ['required', 'uuid'],
             'advice' => ['nullable', 'string'],
             'restrictions' => ['nullable', 'string'],
             'expected_return_date' => ['nullable', 'date'],
         ]);
 
         $caseFile = CaseFile::withoutGlobalScope('tenant')
-            ->where('tenant_id', $data['tenant_id'])
             ->findOrFail($case);
 
         $caseFile->update([

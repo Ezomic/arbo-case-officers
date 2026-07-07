@@ -9,11 +9,13 @@ function caseOfficerWithManageEmployers(): User
 {
     $user = User::factory()->create();
 
-    RolePermission::query()->create([
-        'tenant_id' => $user->tenant_id,
-        'role_name' => $user->current_role,
-        'permission' => 'Manage employers',
-    ]);
+    foreach (['Manage employers', 'View employers'] as $permission) {
+        RolePermission::query()->create([
+            'tenant_id' => $user->tenant_id,
+            'role_name' => $user->current_role,
+            'permission' => $permission,
+        ]);
+    }
 
     return $user;
 }

@@ -13,6 +13,8 @@ class CaseTaskController extends Controller
 {
     public function store(Request $request, CaseFile $case): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $data = $request->validate([
             'task_type_id' => ['nullable', 'uuid', 'exists:task_types,id'],
             'title' => ['required', 'string', 'max:255'],
@@ -33,6 +35,8 @@ class CaseTaskController extends Controller
 
     public function update(Request $request, CaseFile $case, CaseTask $task): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
@@ -49,6 +53,8 @@ class CaseTaskController extends Controller
 
     public function complete(CaseFile $case, CaseTask $task): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $task->update(['completed_at' => Carbon::now()]);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Task completed.']);
@@ -58,6 +64,8 @@ class CaseTaskController extends Controller
 
     public function destroy(CaseFile $case, CaseTask $task): RedirectResponse
     {
+        $this->authorize('manage-cases');
+
         $task->delete();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Task deleted.']);

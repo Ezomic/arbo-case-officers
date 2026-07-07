@@ -17,6 +17,8 @@ class CaseNoteController extends Controller
 {
     public function store(Request $request, CaseFile $case, NoteTypeSyncService $noteTypeSync, CaseEventService $events): RedirectResponse
     {
+        $this->authorize('view-cases');
+
         /** @var User $user */
         $user = Auth::user();
         $noteTypeSync->sync($user->tenant_id);
