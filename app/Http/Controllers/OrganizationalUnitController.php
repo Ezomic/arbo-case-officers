@@ -14,6 +14,8 @@ class OrganizationalUnitController extends Controller
 {
     public function store(Request $request, Employer $employer): RedirectResponse
     {
+        $this->authorize('manage-contracts');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'is_legal_entity' => ['boolean'],
@@ -45,6 +47,8 @@ class OrganizationalUnitController extends Controller
 
     public function update(Request $request, Employer $employer, OrganizationalUnit $organizationalUnit): RedirectResponse
     {
+        $this->authorize('manage-contracts');
+
         $excludedIds = $organizationalUnit->selfAndDescendantIds();
 
         $data = $request->validate([
