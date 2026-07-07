@@ -17,6 +17,8 @@ class ContractController extends Controller
      */
     public function store(Request $request, Employer $employer): RedirectResponse
     {
+        $this->authorize('manage-contracts');
+
         $data = $request->validate([
             'contract_type_id' => ['required', 'uuid', 'exists:contract_types,id'],
             'start_date' => ['required', 'date'],
