@@ -88,6 +88,13 @@ type TaskType = { id: string; name: string };
 
 type CaseOfficer = { id: string; name: string };
 
+type Milestone = {
+    milestone: string;
+    label: string;
+    due_date: string;
+    status: 'overdue' | 'due_soon' | 'upcoming';
+};
+
 type TimelineEvent = {
     id: number;
     event: string;
@@ -102,6 +109,7 @@ const props = defineProps<{
     notes: Note[];
     writableNoteTypes: NoteType[];
     timeline: TimelineEvent[];
+    milestones: Milestone[];
     tasks: Task[];
     taskTypes: TaskType[];
     caseOfficers: CaseOfficer[];
@@ -272,6 +280,20 @@ function payloadLabel(key: string): string {
 function payloadValue(value: string): string {
     return /^\d{4}-\d{2}-\d{2}$/.test(value) ? formatDate(value) : value;
 }
+
+const milestoneStatusLabels: Record<Milestone['status'], string> = {
+    overdue: 'Overdue',
+    due_soon: 'Due soon',
+    upcoming: 'Upcoming',
+};
+
+const milestoneStatusClasses: Record<Milestone['status'], string> = {
+    overdue:
+        'border-transparent bg-destructive/10 text-destructive',
+    due_soon:
+        'border-transparent bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-400',
+    upcoming: 'border-transparent bg-muted text-muted-foreground',
+};
 </script>
 
 <template>
@@ -429,6 +451,31 @@ function payloadValue(value: string): string {
                             <dd class="font-medium">{{ props.case.advice }}</dd>
                         </div>
                     </dl>
+                </div>
+
+                <!-- Reintegration timeline -->
+                <div v-if="props.milestones.length > 0" class="rounded-lg border p-4">
+                    <h2 class="mb-4 font-medium">Reintegration timeline</h2>
+                    <ol class="space-y-3 text-sm">
+                        <li
+                            v-for="milestone in props.milestones"
+                            :key="milestone.milestone"
+                            class="flex items-center justify-between gap-2"
+                        >
+                            <div>
+                                <p class="font-medium">{{ milestone.label }}</p>
+                                <p class="text-xs text-muted-foreground">
+                                    {{ formatDate(milestone.due_date) }}
+                                </p>
+                            </div>
+                            <Badge
+                                variant="outline"
+                                :class="milestoneStatusClasses[milestone.status]"
+                            >
+                                {{ milestoneStatusLabels[milestone.status] }}
+                            </Badge>
+                        </li>
+                    </ol>
                 </div>
 
                 <!-- Tasks -->
