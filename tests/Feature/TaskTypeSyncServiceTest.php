@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\TaskType;
+use App\Models\TaskTypeCondition;
 use App\Services\AdminClient;
 use App\Services\TaskTypeSyncService;
 use RobbinThijssen\IdentitySsoKit\Api\InternalApiException;
@@ -137,14 +138,14 @@ it('does not throw when the remote call throws a generic exception', function ()
     expect($result->first()->id)->toBe($taskTypeId);
 });
 
-it('does not persist a newly synced task type under the id supplied by the remote response', function () {
-    // Documents a real bug: TaskType::$fillable (via #[Fillable]) does not
-    // include "id", so updateOrCreate(['id' => $tt['id']], ...) silently
-    // drops the incoming id on insert. HasUuidPrimaryKey then assigns a
+it('persists a newly synced task type under the id supplied by the remote response', function () {
+    // Regression test for a real bug: TaskType::$fillable (via #[Fillable])
+    // used to omit "id", so updateOrCreate(['id' => $tt['id']], ...) silently
+    // dropped the incoming id on insert. HasUuidPrimaryKey then assigned a
     // random UUID, and the immediately following whereNotIn('id', $remoteIds)
-    // cleanup deletes that row again because its real id never matches
-    // $remoteIds. Net effect: sync() can never persist a task type it has
-    // not already seen before, for a tenant with no prior local cache.
+    // cleanup deleted that row again because its real id never matched
+    // $remoteIds — sync() could never persist a task type it hadn't already
+    // seen before, for a tenant with no prior local cache.
     $tenantId = (string) Str::uuid();
     $taskTypeId = (string) Str::uuid();
 
@@ -165,6 +166,105 @@ it('does not persist a newly synced task type under the id supplied by the remot
     $service = app(TaskTypeSyncService::class);
     $result = $service->sync($tenantId);
 
-    $this->assertDatabaseMissing('task_types', ['id' => $taskTypeId]);
-    expect($result)->toHaveCount(0);
+    $this->assertDatabaseHas('task_types', ['id' => $taskTypeId, 'name' => 'Follow-up call']);
+    expect($result)->toHaveCount(1);
+    expect($result->first()->id)->toBe($taskTypeId);
+});
+
+it('survives a second sync without deleting and recreating the task type under a new id', function () {
+    $tenantId = (string) Str::uuid();
+    $taskTypeId = (string) Str::uuid();
+
+    $this->mock(AdminClient::class, function ($mock) use ($tenantId, $taskTypeId) {
+        $mock->shouldReceive('getTaskTypes')
+            ->twice()
+            ->with($tenantId)
+            ->andReturn([
+                [
+                    'id' => $taskTypeId,
+                    'tenant_id' => $tenantId,
+                    'name' => 'Follow-up call',
+                    'description' => null,
+                ],
+            ]);
+    });
+
+    $service = app(TaskTypeSyncService::class);
+    $service->sync($tenantId);
+    $result = $service->sync($tenantId);
+
+    expect($result)->toHaveCount(1);
+    expect($result->first()->id)->toBe($taskTypeId);
+    $this->assertDatabaseCount('task_types', 1);
+});
+
+it('creates local condition rows from the remote payload', function () {
+    $tenantId = (string) Str::uuid();
+    $taskTypeId = (string) Str::uuid();
+
+    $this->mock(AdminClient::class, function ($mock) use ($tenantId, $taskTypeId) {
+        $mock->shouldReceive('getTaskTypes')
+            ->once()
+            ->with($tenantId)
+            ->andReturn([
+                [
+                    'id' => $taskTypeId,
+                    'tenant_id' => $tenantId,
+                    'name' => 'Plan van aanpak opstellen',
+                    'description' => null,
+                    'conditions' => [
+                        ['type' => 'case_type', 'case_type' => 'verzuim', 'milestone' => null],
+                        ['type' => 'milestone_due', 'case_type' => null, 'milestone' => 'plan_van_aanpak'],
+                        ['type' => 'return_date_overdue', 'case_type' => null, 'milestone' => null],
+                    ],
+                ],
+            ]);
+    });
+
+    app(TaskTypeSyncService::class)->sync($tenantId);
+
+    $conditions = TaskTypeCondition::query()->where('task_type_id', $taskTypeId)->get();
+    expect($conditions)->toHaveCount(3)
+        ->and($conditions->firstWhere('type', 'case_type')?->case_type?->value)->toBe('verzuim')
+        ->and($conditions->firstWhere('type', 'milestone_due')?->milestone?->value)->toBe('plan_van_aanpak')
+        ->and($conditions->contains('type', 'return_date_overdue'))->toBeTrue();
+});
+
+it('replaces local condition rows on re-sync when the remote conditions change', function () {
+    $tenantId = (string) Str::uuid();
+    $taskTypeId = (string) Str::uuid();
+
+    $this->mock(AdminClient::class, function ($mock) use ($tenantId, $taskTypeId) {
+        $mock->shouldReceive('getTaskTypes')
+            ->once()
+            ->with($tenantId)
+            ->andReturn([
+                [
+                    'id' => $taskTypeId,
+                    'tenant_id' => $tenantId,
+                    'name' => 'Follow-up call',
+                    'description' => null,
+                    'conditions' => [['type' => 'return_date_overdue', 'case_type' => null, 'milestone' => null]],
+                ],
+            ]);
+    });
+    app(TaskTypeSyncService::class)->sync($tenantId);
+
+    $this->mock(AdminClient::class, function ($mock) use ($tenantId, $taskTypeId) {
+        $mock->shouldReceive('getTaskTypes')
+            ->once()
+            ->with($tenantId)
+            ->andReturn([
+                [
+                    'id' => $taskTypeId,
+                    'tenant_id' => $tenantId,
+                    'name' => 'Follow-up call',
+                    'description' => null,
+                    'conditions' => [],
+                ],
+            ]);
+    });
+    app(TaskTypeSyncService::class)->sync($tenantId);
+
+    expect(TaskTypeCondition::query()->where('task_type_id', $taskTypeId)->count())->toBe(0);
 });
