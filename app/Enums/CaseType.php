@@ -35,4 +35,13 @@ enum CaseType: string
             default => false,
         };
     }
+
+    /** Whether the Wet Verbetering Poortwachter reintegration timeline applies to this case type. */
+    public function hasReintegrationMilestones(): bool
+    {
+        return match ($this) {
+            self::Verzuim, self::ReintegratieSpoor1, self::ReintegratieSpoor2 => true,
+            default => false,
+        };
+    }
 }

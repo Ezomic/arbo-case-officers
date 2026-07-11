@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\CaseEventService;
 use App\Services\EmployersClient;
 use App\Services\NoteTypeSyncService;
+use App\Services\ReintegrationTimelineService;
 use App\Services\TaskTypeSyncService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class CaseController extends Controller
         ]);
     }
 
-    public function show(CaseFile $case, NoteTypeSyncService $noteTypeSync, TaskTypeSyncService $taskTypeSync, CaseEventService $events): Response
+    public function show(CaseFile $case, NoteTypeSyncService $noteTypeSync, TaskTypeSyncService $taskTypeSync, CaseEventService $events, ReintegrationTimelineService $reintegrationTimeline): Response
     {
         $timeline = CaseEvent::query()
             ->where('case_id', $case->id)
@@ -127,6 +128,7 @@ class CaseController extends Controller
             'notes' => $notes,
             'writableNoteTypes' => $writableNoteTypes->values(),
             'timeline' => $timeline,
+            'milestones' => $reintegrationTimeline->milestonesFor($case),
             'tasks' => $tasks,
             'taskTypes' => $taskTypes->values(),
             'caseOfficers' => $caseOfficers,
