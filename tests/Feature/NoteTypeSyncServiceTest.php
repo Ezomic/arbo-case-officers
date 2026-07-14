@@ -142,14 +142,15 @@ it('does not throw when the remote call throws a generic exception', function ()
     expect($result->first()->id)->toBe($noteTypeId);
 });
 
-it('does not persist a newly synced note type under the id supplied by the remote response', function () {
-    // Documents a real bug: NoteType::$fillable (via #[Fillable]) does not
-    // include "id", so updateOrCreate(['id' => $nt['id']], ...) silently
-    // drops the incoming id on insert. HasUuidPrimaryKey then assigns a
-    // random UUID, and the immediately following whereNotIn('id', $remoteIds)
-    // cleanup deletes that row again because its real id never matches
-    // $remoteIds. Net effect: sync() can never persist a note type it has
-    // not already seen before, for a tenant with no prior local cache.
+it('persists a newly synced note type under the id supplied by the remote response', function () {
+    // Regression test for a real bug (ARBO-48): NoteType::$fillable (via
+    // #[Fillable]) used to omit "id", so updateOrCreate(['id' => $nt['id']],
+    // ...) silently dropped the incoming id on insert. HasUuidPrimaryKey then
+    // assigned a random UUID, and the immediately following
+    // whereNotIn('id', $remoteIds) cleanup deleted that row again because its
+    // real id never matched $remoteIds — sync() could never persist a note
+    // type it hadn't already seen before, for a tenant with no prior local
+    // cache.
     $tenantId = (string) Str::uuid();
     $noteTypeId = (string) Str::uuid();
 
@@ -170,6 +171,34 @@ it('does not persist a newly synced note type under the id supplied by the remot
     $service = app(NoteTypeSyncService::class);
     $result = $service->sync($tenantId);
 
-    $this->assertDatabaseMissing('note_types', ['id' => $noteTypeId]);
-    expect($result)->toHaveCount(0);
+    $this->assertDatabaseHas('note_types', ['id' => $noteTypeId, 'name' => 'Medical note']);
+    expect($result)->toHaveCount(1);
+    expect($result->first()->id)->toBe($noteTypeId);
+});
+
+it('survives a second sync without deleting and recreating the note type under a new id', function () {
+    $tenantId = (string) Str::uuid();
+    $noteTypeId = (string) Str::uuid();
+
+    $this->mock(AdminClient::class, function ($mock) use ($tenantId, $noteTypeId) {
+        $mock->shouldReceive('getNoteTypes')
+            ->twice()
+            ->with($tenantId)
+            ->andReturn([
+                [
+                    'id' => $noteTypeId,
+                    'tenant_id' => $tenantId,
+                    'name' => 'Medical note',
+                    'permissions' => [],
+                ],
+            ]);
+    });
+
+    $service = app(NoteTypeSyncService::class);
+    $service->sync($tenantId);
+    $result = $service->sync($tenantId);
+
+    expect($result)->toHaveCount(1);
+    expect($result->first()->id)->toBe($noteTypeId);
+    $this->assertDatabaseCount('note_types', 1);
 });
