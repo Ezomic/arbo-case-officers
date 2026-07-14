@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
@@ -13,10 +14,10 @@ use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
  * @property string $id
  * @property string $tenant_id
  * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
-#[Fillable(['tenant_id', 'name'])]
+#[Fillable(['id', 'tenant_id', 'name'])]
 class NoteType extends Model
 {
     use HasTenantScope, HasUuidPrimaryKey;
