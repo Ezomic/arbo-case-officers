@@ -1,7 +1,7 @@
-import Http from './Http'
+import Http from './Http';
 
 const IdentitySsoKit = {
     Http: Object.assign(Http, Http),
-}
+};
 
-export default IdentitySsoKit
+export default IdentitySsoKit;

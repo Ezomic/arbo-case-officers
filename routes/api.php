@@ -52,6 +52,9 @@ Route::middleware(['auth:api-client', 'throttle:api-internal'])->group(function 
     Route::post('employers/{employer}/employees', [EmployeeApiController::class, 'store'])
         ->middleware('ability:employees:write');
 
+    Route::put('employers/{employer}/employees/{employee}', [EmployeeApiController::class, 'update'])
+        ->middleware('ability:employees:write');
+
     Route::post('employers/{employer}/employees/import', [EmployeeImportApiController::class, 'store'])
         ->middleware('ability:employees:write');
 

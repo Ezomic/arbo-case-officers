@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('employers/{employer}/contracts', [ContractController::class, 'store'])->name('contracts.store');
     Route::post('employers/{employer}/employees', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('employers/{employer}/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('employers/{employer}/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::post('employers/{employer}/organizational-units', [OrganizationalUnitController::class, 'store'])->name('organizational-units.store');
     Route::get('employers/{employer}/organizational-units/{organizationalUnit}/edit', [OrganizationalUnitController::class, 'edit'])->name('organizational-units.edit');
     Route::put('employers/{employer}/organizational-units/{organizationalUnit}', [OrganizationalUnitController::class, 'update'])->name('organizational-units.update');

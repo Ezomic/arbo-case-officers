@@ -8,6 +8,7 @@ use App\Models\Employer;
 use App\Models\OrganizationalUnit;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use RuntimeException;
 
@@ -65,17 +66,34 @@ class EmployeeImportService
             'email' => ['nullable', 'email', 'max:255'],
             'employee_number' => ['nullable', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
+            'bsn' => ['nullable', 'digits:9'],
+            'nationality' => ['nullable', 'string', 'size:3'],
+            'address_line_1' => ['nullable', 'string', 'max:255', 'required_with:postal_code,city'],
+            'address_line_2' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['nullable', 'string', 'max:10', 'required_with:address_line_1'],
+            'city' => ['nullable', 'string', 'max:255', 'required_with:address_line_1'],
+            'country' => ['nullable', 'string', 'size:2'],
         ])->validate();
+
+        $addressFields = array_intersect_key($validated, array_flip(['address_line_1', 'address_line_2', 'postal_code', 'city', 'country']));
+        $employeeFields = array_diff_key($validated, $addressFields);
 
         $organizationalUnit = $this->resolveOrganizationalUnit($employer, $row);
 
-        return Employee::query()->create([
-            ...$validated,
+        $employee = Employee::query()->create([
+            ...$employeeFields,
             'tenant_id' => $employer->tenant_id,
             'employer_id' => $employer->id,
             'organizational_unit_id' => $organizationalUnit->id,
             'source' => "import_{$source}",
         ]);
+
+        if (($addressFields['address_line_1'] ?? null) !== null) {
+            $employee->address()->create($addressFields);
+        }
+
+        return $employee;
     }
 
     public function storagePath(EmployeeImport $import): string
