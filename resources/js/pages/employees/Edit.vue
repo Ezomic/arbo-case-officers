@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { update } from '@/routes/employees';
-import { show as showEmployer } from '@/routes/employers';
+import { index as employersIndex } from '@/routes/employers';
 
 type Employer = { id: string; name: string };
 type OrganizationalUnit = { id: string; name: string };
@@ -31,7 +31,7 @@ type Employee = {
     address: Address;
 };
 
-const props = defineProps<{
+defineProps<{
     employer: Employer;
     employee: Employee;
     organizationalUnits: OrganizationalUnit[];
@@ -39,9 +39,7 @@ const props = defineProps<{
 
 defineOptions({
     layout: {
-        breadcrumbs: [
-            { title: 'Employers', href: showEmployer(props.employer.id) },
-        ],
+        breadcrumbs: [{ title: 'Employers', href: employersIndex() }],
     },
 });
 </script>
