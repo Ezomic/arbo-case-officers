@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -96,10 +97,66 @@ class EmployeeController extends Controller
             'email' => ['nullable', 'email', 'max:255'],
             'employee_number' => ['nullable', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
+            'bsn' => ['nullable', 'digits:9'],
+            'nationality' => ['nullable', 'string', 'size:3'],
+            'address_line_1' => ['nullable', 'string', 'max:255', 'required_with:postal_code,city'],
+            'address_line_2' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['nullable', 'string', 'max:10', 'required_with:address_line_1'],
+            'city' => ['nullable', 'string', 'max:255', 'required_with:address_line_1'],
+            'country' => ['nullable', 'string', 'size:2'],
             'organizational_unit_id' => ['required', 'uuid', 'exists:organizational_units,id'],
         ]);
 
         $service->createFromRow($employer, $data, 'case-officers');
+
+        return to_route('employers.show', $employer);
+    }
+
+    public function edit(Employer $employer, Employee $employee): Response
+    {
+        $this->authorize('manage-employees');
+
+        $employee->load('address', 'organizationalUnit');
+
+        return Inertia::render('employees/Edit', [
+            'employer' => $employer,
+            'employee' => $employee,
+            'organizationalUnits' => $employer->organizationalUnits()->oldest()->get(),
+        ]);
+    }
+
+    public function update(Request $request, Employer $employer, Employee $employee): RedirectResponse
+    {
+        $this->authorize('manage-employees');
+
+        $data = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'employee_number' => ['nullable', 'string', 'max:255'],
+            'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
+            'bsn' => ['nullable', 'digits:9'],
+            'nationality' => ['nullable', 'string', 'size:3'],
+            'address_line_1' => ['nullable', 'string', 'max:255', 'required_with:postal_code,city'],
+            'address_line_2' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['nullable', 'string', 'max:10', 'required_with:address_line_1'],
+            'city' => ['nullable', 'string', 'max:255', 'required_with:address_line_1'],
+            'country' => ['nullable', 'string', 'size:2'],
+            'organizational_unit_id' => ['required', 'uuid', 'exists:organizational_units,id'],
+        ]);
+
+        $addressFields = array_intersect_key($data, array_flip(['address_line_1', 'address_line_2', 'postal_code', 'city', 'country']));
+        $employeeFields = array_diff_key($data, $addressFields);
+
+        $employee->update($employeeFields);
+
+        if (($addressFields['address_line_1'] ?? null) !== null) {
+            $employee->address()->updateOrCreate([], $addressFields);
+        } else {
+            $employee->address()->delete();
+        }
 
         return to_route('employers.show', $employer);
     }

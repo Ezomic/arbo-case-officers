@@ -1,19 +1,30 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
-import { Plus, Trash2 } from '@lucide/vue';
+import { Form, Head, Link } from '@inertiajs/vue3';
+import { Pencil, Plus, Trash2 } from '@lucide/vue';
 import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import OrganizationalUnitTree from '@/components/OrganizationalUnitTree.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatDate } from '@/lib/date';
-import { destroy as destroyContactPerson, store as storeContactPerson } from '@/routes/contact-persons';
+import {
+    destroy as destroyContactPerson,
+    store as storeContactPerson,
+} from '@/routes/contact-persons';
 import { store as storeContract } from '@/routes/contracts';
-import { store as storeEmployee } from '@/routes/employees';
+import {
+    edit as editEmployee,
+    store as storeEmployee,
+} from '@/routes/employees';
 import { index } from '@/routes/employers';
 import { store as storeOrganizationalUnit } from '@/routes/organizational-units';
 
@@ -88,24 +99,42 @@ const showContactDialog = ref(false);
     <Head :title="employer.name" />
 
     <div class="flex flex-col gap-8 p-4">
-        <Heading :title="employer.name" :description="employer.kvk_number ?? undefined" />
+        <Heading
+            :title="employer.name"
+            :description="employer.kvk_number ?? undefined"
+        />
 
         <section class="grid gap-4 md:grid-cols-2">
             <div class="rounded-lg border p-4">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="font-medium">Contracts</h2>
-                    <Button variant="ghost" size="icon" aria-label="Add contract" @click="showContractDialog = true">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Add contract"
+                        @click="showContractDialog = true"
+                    >
                         <Plus class="size-4" />
                     </Button>
                 </div>
 
                 <ul class="space-y-2">
-                    <li v-for="contract in contracts" :key="contract.id" class="text-sm">
-                        {{ contract.contract_type_label }} — {{ formatDate(contract.start_date) }}
-                        <span v-if="contract.end_date"> to {{ formatDate(contract.end_date) }}</span>
+                    <li
+                        v-for="contract in contracts"
+                        :key="contract.id"
+                        class="text-sm"
+                    >
+                        {{ contract.contract_type_label }} —
+                        {{ formatDate(contract.start_date) }}
+                        <span v-if="contract.end_date">
+                            to {{ formatDate(contract.end_date) }}</span
+                        >
                         ({{ contract.status }})
                     </li>
-                    <li v-if="contracts.length === 0" class="text-sm text-muted-foreground">
+                    <li
+                        v-if="contracts.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No contracts yet.
                     </li>
                 </ul>
@@ -114,40 +143,82 @@ const showContactDialog = ref(false);
             <div class="rounded-lg border p-4">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="font-medium">Organizational units</h2>
-                    <Button variant="ghost" size="icon" aria-label="Add unit" @click="showUnitDialog = true">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Add unit"
+                        @click="showUnitDialog = true"
+                    >
                         <Plus class="size-4" />
                     </Button>
                 </div>
 
-                <OrganizationalUnitTree :units="organizationalUnits" :employer-id="employer.id" />
+                <OrganizationalUnitTree
+                    :units="organizationalUnits"
+                    :employer-id="employer.id"
+                />
             </div>
 
             <div class="rounded-lg border p-4 md:col-span-2">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="font-medium">Contact persons</h2>
-                    <Button variant="ghost" size="icon" aria-label="Add contact person" @click="showContactDialog = true">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Add contact person"
+                        @click="showContactDialog = true"
+                    >
                         <Plus class="size-4" />
                     </Button>
                 </div>
 
                 <ul class="space-y-2">
-                    <li v-for="cp in contactPersons" :key="cp.id" class="flex items-center justify-between text-sm">
+                    <li
+                        v-for="cp in contactPersons"
+                        :key="cp.id"
+                        class="flex items-center justify-between text-sm"
+                    >
                         <div>
                             <span class="font-medium">{{ cp.name }}</span>
-                            <span v-if="cp.job_title" class="ml-2 text-muted-foreground">{{ cp.job_title }}</span>
-                            <span v-if="cp.email" class="ml-2 text-muted-foreground">· {{ cp.email }}</span>
-                            <span v-if="cp.phone" class="ml-2 text-muted-foreground">· {{ cp.phone }}</span>
+                            <span
+                                v-if="cp.job_title"
+                                class="ml-2 text-muted-foreground"
+                                >{{ cp.job_title }}</span
+                            >
+                            <span
+                                v-if="cp.email"
+                                class="ml-2 text-muted-foreground"
+                                >· {{ cp.email }}</span
+                            >
+                            <span
+                                v-if="cp.phone"
+                                class="ml-2 text-muted-foreground"
+                                >· {{ cp.phone }}</span
+                            >
                         </div>
                         <Form
-                            v-bind="destroyContactPerson.form({ employer: employer.id, contactPerson: cp.id })"
+                            v-bind="
+                                destroyContactPerson.form({
+                                    employer: employer.id,
+                                    contactPerson: cp.id,
+                                })
+                            "
                             class="ml-2"
                         >
-                            <Button type="submit" variant="ghost" size="icon" aria-label="Delete">
+                            <Button
+                                type="submit"
+                                variant="ghost"
+                                size="icon"
+                                aria-label="Delete"
+                            >
                                 <Trash2 class="size-4 text-destructive" />
                             </Button>
                         </Form>
                     </li>
-                    <li v-if="contactPersons.length === 0" class="text-sm text-muted-foreground">
+                    <li
+                        v-if="contactPersons.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No contact persons yet.
                     </li>
                 </ul>
@@ -156,19 +227,53 @@ const showContactDialog = ref(false);
             <div class="rounded-lg border p-4 md:col-span-2">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="font-medium">Employees</h2>
-                    <Button variant="ghost" size="icon" aria-label="Add employee" @click="showEmployeeDialog = true">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Add employee"
+                        @click="showEmployeeDialog = true"
+                    >
                         <Plus class="size-4" />
                     </Button>
                 </div>
 
                 <ul class="space-y-2">
-                    <li v-for="employee in employees" :key="employee.id" class="text-sm">
-                        {{ employee.first_name }} {{ employee.last_name }}
-                        <span class="text-muted-foreground">
-                            ({{ employee.organizational_unit?.name }}, {{ employee.source }})
+                    <li
+                        v-for="employee in employees"
+                        :key="employee.id"
+                        class="flex items-center justify-between gap-2 text-sm"
+                    >
+                        <span>
+                            {{ employee.first_name }} {{ employee.last_name }}
+                            <span class="text-muted-foreground">
+                                ({{ employee.organizational_unit?.name }},
+                                {{ employee.source }})
+                            </span>
                         </span>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            as-child
+                            class="shrink-0 text-muted-foreground"
+                        >
+                            <Link
+                                :href="
+                                    editEmployee({
+                                        employer: employer.id,
+                                        employee: employee.id,
+                                    })
+                                "
+                                title="Edit employee"
+                                aria-label="Edit employee"
+                            >
+                                <Pencil class="size-4" />
+                            </Link>
+                        </Button>
                     </li>
-                    <li v-if="employees.length === 0" class="text-sm text-muted-foreground">
+                    <li
+                        v-if="employees.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No employees yet.
                     </li>
                 </ul>
@@ -194,10 +299,18 @@ const showContactDialog = ref(false);
                         required
                         class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
                     >
-                        <option v-if="contractTypes.length === 0" value="" disabled>
+                        <option
+                            v-if="contractTypes.length === 0"
+                            value=""
+                            disabled
+                        >
                             No contract types yet — add one in Admin
                         </option>
-                        <option v-for="contractType in contractTypes" :key="contractType.id" :value="contractType.id">
+                        <option
+                            v-for="contractType in contractTypes"
+                            :key="contractType.id"
+                            :value="contractType.id"
+                        >
                             {{ contractType.name }}
                         </option>
                     </select>
@@ -205,7 +318,12 @@ const showContactDialog = ref(false);
                 </div>
                 <div class="grid gap-2">
                     <Label for="start_date">Start date</Label>
-                    <Input id="start_date" type="date" name="start_date" required />
+                    <Input
+                        id="start_date"
+                        type="date"
+                        name="start_date"
+                        required
+                    />
                     <InputError :message="errors.start_date" />
                 </div>
                 <div class="grid gap-2">
@@ -213,7 +331,9 @@ const showContactDialog = ref(false);
                     <Input id="end_date" type="date" name="end_date" />
                     <InputError :message="errors.end_date" />
                 </div>
-                <Button type="submit" :disabled="processing">Add contract</Button>
+                <Button type="submit" :disabled="processing"
+                    >Add contract</Button
+                >
             </Form>
         </DialogContent>
     </Dialog>
@@ -231,7 +351,12 @@ const showContactDialog = ref(false);
             >
                 <div class="grid gap-2">
                     <Label for="unit_name">Name</Label>
-                    <Input id="unit_name" name="name" required placeholder="e.g. Logistics department" />
+                    <Input
+                        id="unit_name"
+                        name="name"
+                        required
+                        placeholder="e.g. Logistics department"
+                    />
                     <InputError :message="errors.name" />
                 </div>
                 <div class="grid gap-2">
@@ -242,7 +367,11 @@ const showContactDialog = ref(false);
                         class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
                     >
                         <option value="">None (top level)</option>
-                        <option v-for="unit in organizationalUnits" :key="unit.id" :value="unit.id">
+                        <option
+                            v-for="unit in organizationalUnits"
+                            :key="unit.id"
+                            :value="unit.id"
+                        >
                             {{ unit.name }}
                         </option>
                     </select>
@@ -254,7 +383,11 @@ const showContactDialog = ref(false);
                 </Label>
                 <div class="grid gap-2">
                     <Label for="unit_kvk_number">KvK number</Label>
-                    <Input id="unit_kvk_number" name="kvk_number" placeholder="Optional" />
+                    <Input
+                        id="unit_kvk_number"
+                        name="kvk_number"
+                        placeholder="Optional"
+                    />
                     <InputError :message="errors.kvk_number" />
                 </div>
                 <Button type="submit" :disabled="processing">Add unit</Button>
@@ -270,7 +403,21 @@ const showContactDialog = ref(false);
             <Form
                 v-bind="storeEmployee.form({ employer: employer.id })"
                 v-slot="{ errors, processing }"
-                :reset-on-success="['first_name', 'last_name', 'email', 'employee_number']"
+                :reset-on-success="[
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'employee_number',
+                    'date_of_birth',
+                    'gender',
+                    'bsn',
+                    'nationality',
+                    'address_line_1',
+                    'address_line_2',
+                    'postal_code',
+                    'city',
+                    'country',
+                ]"
                 class="space-y-3"
             >
                 <div class="grid gap-2">
@@ -289,20 +436,98 @@ const showContactDialog = ref(false);
                     <InputError :message="errors.email" />
                 </div>
                 <div class="grid gap-2">
-                    <Label for="organizational_unit_id">Organizational unit</Label>
+                    <Label for="date_of_birth">Date of birth</Label>
+                    <Input
+                        id="date_of_birth"
+                        type="date"
+                        name="date_of_birth"
+                    />
+                    <InputError :message="errors.date_of_birth" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="gender">Gender</Label>
+                    <select
+                        id="gender"
+                        name="gender"
+                        class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
+                    >
+                        <option value="">Unspecified</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <InputError :message="errors.gender" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="bsn">BSN</Label>
+                    <Input id="bsn" name="bsn" maxlength="9" />
+                    <InputError :message="errors.bsn" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="nationality"
+                        >Nationality (ISO 3166-1 alpha-3)</Label
+                    >
+                    <Input
+                        id="nationality"
+                        name="nationality"
+                        maxlength="3"
+                        placeholder="NLD"
+                    />
+                    <InputError :message="errors.nationality" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="address_line_1">Address line 1</Label>
+                    <Input id="address_line_1" name="address_line_1" />
+                    <InputError :message="errors.address_line_1" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="address_line_2">Address line 2</Label>
+                    <Input id="address_line_2" name="address_line_2" />
+                    <InputError :message="errors.address_line_2" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="postal_code">Postal code</Label>
+                    <Input id="postal_code" name="postal_code" />
+                    <InputError :message="errors.postal_code" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="city">City</Label>
+                    <Input id="city" name="city" />
+                    <InputError :message="errors.city" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="country">Country (ISO 3166-1 alpha-2)</Label>
+                    <Input
+                        id="country"
+                        name="country"
+                        maxlength="2"
+                        placeholder="NL"
+                    />
+                    <InputError :message="errors.country" />
+                </div>
+                <div class="grid gap-2">
+                    <Label for="organizational_unit_id"
+                        >Organizational unit</Label
+                    >
                     <select
                         id="organizational_unit_id"
                         name="organizational_unit_id"
                         required
                         class="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-xs"
                     >
-                        <option v-for="unit in organizationalUnits" :key="unit.id" :value="unit.id">
+                        <option
+                            v-for="unit in organizationalUnits"
+                            :key="unit.id"
+                            :value="unit.id"
+                        >
                             {{ unit.name }}
                         </option>
                     </select>
                     <InputError :message="errors.organizational_unit_id" />
                 </div>
-                <Button type="submit" :disabled="processing">Add employee</Button>
+                <Button type="submit" :disabled="processing"
+                    >Add employee</Button
+                >
             </Form>
         </DialogContent>
     </Dialog>
@@ -338,7 +563,9 @@ const showContactDialog = ref(false);
                     <Input id="cp_phone" name="phone" />
                     <InputError :message="errors.phone" />
                 </div>
-                <Button type="submit" :disabled="processing">Add contact person</Button>
+                <Button type="submit" :disabled="processing"
+                    >Add contact person</Button
+                >
             </Form>
         </DialogContent>
     </Dialog>

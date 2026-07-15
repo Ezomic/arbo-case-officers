@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Carbon;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasTenantScope;
 use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
 
@@ -21,18 +23,13 @@ use RobbinThijssen\IdentitySsoKit\Concerns\HasUuidPrimaryKey;
  * @property string|null $bsn
  * @property string|null $status
  * @property string|null $source
- * @property \Illuminate\Support\Carbon|null $date_of_birth
+ * @property Carbon|null $date_of_birth
  * @property string|null $gender
  * @property string|null $nationality
- * @property string|null $address_line_1
- * @property string|null $address_line_2
- * @property string|null $postal_code
- * @property string|null $city
- * @property string|null $country
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
-#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'bsn', 'status', 'source', 'gender', 'nationality', 'address_line_1', 'address_line_2', 'postal_code', 'city', 'country'])]
+#[Fillable(['tenant_id', 'employer_id', 'organizational_unit_id', 'first_name', 'last_name', 'email', 'employee_number', 'date_of_birth', 'bsn', 'status', 'source', 'gender', 'nationality'])]
 class Employee extends Model
 {
     use HasTenantScope, HasUuidPrimaryKey;
@@ -67,5 +64,13 @@ class Employee extends Model
     public function organizationalUnit(): BelongsTo
     {
         return $this->belongsTo(OrganizationalUnit::class);
+    }
+
+    /**
+     * @return MorphOne<Address, $this>
+     */
+    public function address(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable');
     }
 }

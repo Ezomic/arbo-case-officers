@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { Download, Search, Users } from '@lucide/vue';
+import { Download, Pencil, Search, Users } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { gdprExport as gdprExportUrl, index } from '@/routes/employees';
+import {
+    edit as editUrl,
+    gdprExport as gdprExportUrl,
+    index,
+} from '@/routes/employees';
 import { show as showEmployer } from '@/routes/employers';
 
 type Employee = {
@@ -127,6 +131,25 @@ function initials(employee: Employee): string {
                         >
                     </div>
                 </Link>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    as-child
+                    class="shrink-0 text-muted-foreground"
+                >
+                    <Link
+                        :href="
+                            editUrl({
+                                employer: employee.employer.id,
+                                employee: employee.id,
+                            })
+                        "
+                        title="Edit employee"
+                        aria-label="Edit employee"
+                    >
+                        <Pencil class="size-4" />
+                    </Link>
+                </Button>
                 <Button
                     variant="ghost"
                     size="icon"

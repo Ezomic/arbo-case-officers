@@ -288,8 +288,7 @@ const milestoneStatusLabels: Record<Milestone['status'], string> = {
 };
 
 const milestoneStatusClasses: Record<Milestone['status'], string> = {
-    overdue:
-        'border-transparent bg-destructive/10 text-destructive',
+    overdue: 'border-transparent bg-destructive/10 text-destructive',
     due_soon:
         'border-transparent bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-400',
     upcoming: 'border-transparent bg-muted text-muted-foreground',
@@ -454,7 +453,10 @@ const milestoneStatusClasses: Record<Milestone['status'], string> = {
                 </div>
 
                 <!-- Reintegration timeline -->
-                <div v-if="props.milestones.length > 0" class="rounded-lg border p-4">
+                <div
+                    v-if="props.milestones.length > 0"
+                    class="rounded-lg border p-4"
+                >
                     <h2 class="mb-4 font-medium">Reintegration timeline</h2>
                     <ol class="space-y-3 text-sm">
                         <li
@@ -470,7 +472,9 @@ const milestoneStatusClasses: Record<Milestone['status'], string> = {
                             </div>
                             <Badge
                                 variant="outline"
-                                :class="milestoneStatusClasses[milestone.status]"
+                                :class="
+                                    milestoneStatusClasses[milestone.status]
+                                "
                             >
                                 {{ milestoneStatusLabels[milestone.status] }}
                             </Badge>

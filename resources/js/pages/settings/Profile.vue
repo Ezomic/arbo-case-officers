@@ -58,8 +58,8 @@ const user = computed(() => page.props.auth.user);
 
         <div class="border-t pt-6">
             <p class="text-sm text-muted-foreground">
-                Passwords, two-factor authentication, and passkeys are
-                managed in Identity, not here.
+                Passwords, two-factor authentication, and passkeys are managed
+                in Identity, not here.
             </p>
             <Button variant="outline" size="sm" class="mt-3" as-child>
                 <a

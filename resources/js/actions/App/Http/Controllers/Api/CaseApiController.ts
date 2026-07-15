@@ -405,7 +405,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::mutate
-* @see app/Http/Controllers/Api/CaseApiController.php:75
+* @see app/Http/Controllers/Api/CaseApiController.php:72
 * @route '/api/cases/{case}/mutate'
 */
 export const mutate = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -420,7 +420,7 @@ mutate.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::mutate
-* @see app/Http/Controllers/Api/CaseApiController.php:75
+* @see app/Http/Controllers/Api/CaseApiController.php:72
 * @route '/api/cases/{case}/mutate'
 */
 mutate.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -447,7 +447,7 @@ mutate.url = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::mutate
-* @see app/Http/Controllers/Api/CaseApiController.php:75
+* @see app/Http/Controllers/Api/CaseApiController.php:72
 * @route '/api/cases/{case}/mutate'
 */
 mutate.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -457,7 +457,7 @@ mutate.post = (args: { case: string | number } | [caseParam: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::mutate
-* @see app/Http/Controllers/Api/CaseApiController.php:75
+* @see app/Http/Controllers/Api/CaseApiController.php:72
 * @route '/api/cases/{case}/mutate'
 */
 const mutateForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -467,7 +467,7 @@ const mutateForm = (args: { case: string | number } | [caseParam: string | numbe
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::mutate
-* @see app/Http/Controllers/Api/CaseApiController.php:75
+* @see app/Http/Controllers/Api/CaseApiController.php:72
 * @route '/api/cases/{case}/mutate'
 */
 mutateForm.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -479,7 +479,7 @@ mutate.form = mutateForm
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::close
-* @see app/Http/Controllers/Api/CaseApiController.php:94
+* @see app/Http/Controllers/Api/CaseApiController.php:89
 * @route '/api/cases/{case}/close'
 */
 export const close = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -494,7 +494,7 @@ close.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::close
-* @see app/Http/Controllers/Api/CaseApiController.php:94
+* @see app/Http/Controllers/Api/CaseApiController.php:89
 * @route '/api/cases/{case}/close'
 */
 close.url = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -521,7 +521,7 @@ close.url = (args: { case: string | number } | [caseParam: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::close
-* @see app/Http/Controllers/Api/CaseApiController.php:94
+* @see app/Http/Controllers/Api/CaseApiController.php:89
 * @route '/api/cases/{case}/close'
 */
 close.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -531,7 +531,7 @@ close.post = (args: { case: string | number } | [caseParam: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::close
-* @see app/Http/Controllers/Api/CaseApiController.php:94
+* @see app/Http/Controllers/Api/CaseApiController.php:89
 * @route '/api/cases/{case}/close'
 */
 const closeForm = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -541,7 +541,7 @@ const closeForm = (args: { case: string | number } | [caseParam: string | number
 
 /**
 * @see \App\Http\Controllers\Api\CaseApiController::close
-* @see app/Http/Controllers/Api/CaseApiController.php:94
+* @see app/Http/Controllers/Api/CaseApiController.php:89
 * @route '/api/cases/{case}/close'
 */
 closeForm.post = (args: { case: string | number } | [caseParam: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

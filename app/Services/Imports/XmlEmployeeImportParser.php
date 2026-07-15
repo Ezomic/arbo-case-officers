@@ -34,6 +34,14 @@ class XmlEmployeeImportParser
                 'email' => (string) $employee->email ?: null,
                 'employee_number' => (string) $employee->employee_number ?: null,
                 'date_of_birth' => (string) $employee->date_of_birth ?: null,
+                'gender' => (string) $employee->gender ?: null,
+                'bsn' => (string) $employee->bsn ?: null,
+                'nationality' => (string) $employee->nationality ?: null,
+                'address_line_1' => (string) $employee->address_line_1 ?: null,
+                'address_line_2' => (string) $employee->address_line_2 ?: null,
+                'postal_code' => (string) $employee->postal_code ?: null,
+                'city' => (string) $employee->city ?: null,
+                'country' => (string) $employee->country ?: null,
             ];
         }
 

@@ -3,9 +3,19 @@ import { usePage } from '@inertiajs/vue3';
 import { Grid2X2 } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
-type AccessibleApp = { slug: string; name: string; base_url: string; as: string };
+type AccessibleApp = {
+    slug: string;
+    name: string;
+    base_url: string;
+    as: string;
+};
 
 // Plain <a> tags on purpose, not Inertia's <Link>: these are cross-origin
 // destinations, and Inertia's <Link> navigates via fetch(), which the
@@ -21,12 +31,16 @@ const dotColor: Record<string, string> = {
     admin: 'bg-slate-500',
 };
 
-const page = usePage<{ auth: { user: { accessible_apps: AccessibleApp[] | null } } }>();
+const page = usePage<{
+    auth: { user: { accessible_apps: AccessibleApp[] | null } };
+}>();
 
 const currentSlug = 'case-officers';
 
 const otherApps = computed(() =>
-    (page.props.auth.user.accessible_apps ?? []).filter((app) => app.slug !== currentSlug),
+    (page.props.auth.user.accessible_apps ?? []).filter(
+        (app) => app.slug !== currentSlug,
+    ),
 );
 
 const showDialog = ref(false);
@@ -55,10 +69,15 @@ const showDialog = ref(false);
                     :href="`${app.base_url}/login`"
                     class="flex items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-muted"
                 >
-                    <span class="size-2.5 shrink-0 rounded-full" :class="dotColor[app.slug] ?? 'bg-gray-400'" />
+                    <span
+                        class="size-2.5 shrink-0 rounded-full"
+                        :class="dotColor[app.slug] ?? 'bg-gray-400'"
+                    />
                     <span class="flex flex-col leading-tight">
                         <span>{{ app.name }}</span>
-                        <span class="text-xs text-muted-foreground">as {{ app.as }}</span>
+                        <span class="text-xs text-muted-foreground"
+                            >as {{ app.as }}</span
+                        >
                     </span>
                 </a>
             </div>

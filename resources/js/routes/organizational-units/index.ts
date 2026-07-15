@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 export const edit = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -96,7 +96,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 edit.url = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -126,7 +126,7 @@ edit.url = (args: { employer: string | { id: string }, organizationalUnit: strin
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 edit.get = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -136,7 +136,7 @@ edit.get = (args: { employer: string | { id: string }, organizationalUnit: strin
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 edit.head = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -146,7 +146,7 @@ edit.head = (args: { employer: string | { id: string }, organizationalUnit: stri
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 const editForm = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -156,7 +156,7 @@ const editForm = (args: { employer: string | { id: string }, organizationalUnit:
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 editForm.get = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -166,7 +166,7 @@ editForm.get = (args: { employer: string | { id: string }, organizationalUnit: s
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::edit
-* @see app/Http/Controllers/OrganizationalUnitController.php:32
+* @see app/Http/Controllers/OrganizationalUnitController.php:34
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}/edit'
 */
 editForm.head = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -183,7 +183,7 @@ edit.form = editForm
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::update
-* @see app/Http/Controllers/OrganizationalUnitController.php:46
+* @see app/Http/Controllers/OrganizationalUnitController.php:48
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}'
 */
 export const update = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -198,7 +198,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::update
-* @see app/Http/Controllers/OrganizationalUnitController.php:46
+* @see app/Http/Controllers/OrganizationalUnitController.php:48
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}'
 */
 update.url = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -228,7 +228,7 @@ update.url = (args: { employer: string | { id: string }, organizationalUnit: str
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::update
-* @see app/Http/Controllers/OrganizationalUnitController.php:46
+* @see app/Http/Controllers/OrganizationalUnitController.php:48
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}'
 */
 update.put = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -238,7 +238,7 @@ update.put = (args: { employer: string | { id: string }, organizationalUnit: str
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::update
-* @see app/Http/Controllers/OrganizationalUnitController.php:46
+* @see app/Http/Controllers/OrganizationalUnitController.php:48
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}'
 */
 const updateForm = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -253,7 +253,7 @@ const updateForm = (args: { employer: string | { id: string }, organizationalUni
 
 /**
 * @see \App\Http\Controllers\OrganizationalUnitController::update
-* @see app/Http/Controllers/OrganizationalUnitController.php:46
+* @see app/Http/Controllers/OrganizationalUnitController.php:48
 * @route '/employers/{employer}/organizational-units/{organizationalUnit}'
 */
 updateForm.put = (args: { employer: string | { id: string }, organizationalUnit: string | { id: string } } | [employer: string | { id: string }, organizationalUnit: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

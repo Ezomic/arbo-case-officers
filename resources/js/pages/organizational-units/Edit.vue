@@ -35,16 +35,29 @@ defineOptions({
     <Head :title="`Edit ${organizationalUnit.name}`" />
 
     <div class="flex flex-col gap-6 p-4">
-        <Heading :title="`Edit ${organizationalUnit.name}`" :description="employer.name" />
+        <Heading
+            :title="`Edit ${organizationalUnit.name}`"
+            :description="employer.name"
+        />
 
         <Form
-            v-bind="update.form({ employer: employer.id, organizationalUnit: organizationalUnit.id })"
+            v-bind="
+                update.form({
+                    employer: employer.id,
+                    organizationalUnit: organizationalUnit.id,
+                })
+            "
             v-slot="{ errors, processing }"
             class="max-w-md space-y-4"
         >
             <div class="grid gap-2">
                 <Label for="name">Name</Label>
-                <Input id="name" name="name" required :default-value="organizationalUnit.name" />
+                <Input
+                    id="name"
+                    name="name"
+                    required
+                    :default-value="organizationalUnit.name"
+                />
                 <InputError :message="errors.name" />
             </div>
 

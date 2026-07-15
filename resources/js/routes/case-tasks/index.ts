@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::update
-* @see app/Http/Controllers/CaseTaskController.php:34
+* @see app/Http/Controllers/CaseTaskController.php:36
 * @route '/cases/{case}/tasks/{task}'
 */
 export const update = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -96,7 +96,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::update
-* @see app/Http/Controllers/CaseTaskController.php:34
+* @see app/Http/Controllers/CaseTaskController.php:36
 * @route '/cases/{case}/tasks/{task}'
 */
 update.url = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -126,7 +126,7 @@ update.url = (args: { case: string | { id: string }, task: string | { id: string
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::update
-* @see app/Http/Controllers/CaseTaskController.php:34
+* @see app/Http/Controllers/CaseTaskController.php:36
 * @route '/cases/{case}/tasks/{task}'
 */
 update.put = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -136,7 +136,7 @@ update.put = (args: { case: string | { id: string }, task: string | { id: string
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::update
-* @see app/Http/Controllers/CaseTaskController.php:34
+* @see app/Http/Controllers/CaseTaskController.php:36
 * @route '/cases/{case}/tasks/{task}'
 */
 const updateForm = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -151,7 +151,7 @@ const updateForm = (args: { case: string | { id: string }, task: string | { id: 
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::update
-* @see app/Http/Controllers/CaseTaskController.php:34
+* @see app/Http/Controllers/CaseTaskController.php:36
 * @route '/cases/{case}/tasks/{task}'
 */
 updateForm.put = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -168,7 +168,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::complete
-* @see app/Http/Controllers/CaseTaskController.php:50
+* @see app/Http/Controllers/CaseTaskController.php:54
 * @route '/cases/{case}/tasks/{task}/complete'
 */
 export const complete = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -183,7 +183,7 @@ complete.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::complete
-* @see app/Http/Controllers/CaseTaskController.php:50
+* @see app/Http/Controllers/CaseTaskController.php:54
 * @route '/cases/{case}/tasks/{task}/complete'
 */
 complete.url = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -213,7 +213,7 @@ complete.url = (args: { case: string | { id: string }, task: string | { id: stri
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::complete
-* @see app/Http/Controllers/CaseTaskController.php:50
+* @see app/Http/Controllers/CaseTaskController.php:54
 * @route '/cases/{case}/tasks/{task}/complete'
 */
 complete.post = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -223,7 +223,7 @@ complete.post = (args: { case: string | { id: string }, task: string | { id: str
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::complete
-* @see app/Http/Controllers/CaseTaskController.php:50
+* @see app/Http/Controllers/CaseTaskController.php:54
 * @route '/cases/{case}/tasks/{task}/complete'
 */
 const completeForm = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -233,7 +233,7 @@ const completeForm = (args: { case: string | { id: string }, task: string | { id
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::complete
-* @see app/Http/Controllers/CaseTaskController.php:50
+* @see app/Http/Controllers/CaseTaskController.php:54
 * @route '/cases/{case}/tasks/{task}/complete'
 */
 completeForm.post = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -245,7 +245,7 @@ complete.form = completeForm
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::destroy
-* @see app/Http/Controllers/CaseTaskController.php:59
+* @see app/Http/Controllers/CaseTaskController.php:65
 * @route '/cases/{case}/tasks/{task}'
 */
 export const destroy = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -260,7 +260,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::destroy
-* @see app/Http/Controllers/CaseTaskController.php:59
+* @see app/Http/Controllers/CaseTaskController.php:65
 * @route '/cases/{case}/tasks/{task}'
 */
 destroy.url = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions) => {
@@ -290,7 +290,7 @@ destroy.url = (args: { case: string | { id: string }, task: string | { id: strin
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::destroy
-* @see app/Http/Controllers/CaseTaskController.php:59
+* @see app/Http/Controllers/CaseTaskController.php:65
 * @route '/cases/{case}/tasks/{task}'
 */
 destroy.delete = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -300,7 +300,7 @@ destroy.delete = (args: { case: string | { id: string }, task: string | { id: st
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::destroy
-* @see app/Http/Controllers/CaseTaskController.php:59
+* @see app/Http/Controllers/CaseTaskController.php:65
 * @route '/cases/{case}/tasks/{task}'
 */
 const destroyForm = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -315,7 +315,7 @@ const destroyForm = (args: { case: string | { id: string }, task: string | { id:
 
 /**
 * @see \App\Http\Controllers\CaseTaskController::destroy
-* @see app/Http/Controllers/CaseTaskController.php:59
+* @see app/Http/Controllers/CaseTaskController.php:65
 * @route '/cases/{case}/tasks/{task}'
 */
 destroyForm.delete = (args: { case: string | { id: string }, task: string | { id: string } } | [caseParam: string | { id: string }, task: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
