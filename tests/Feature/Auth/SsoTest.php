@@ -27,6 +27,11 @@ function ssoToken(string $privateKey, array $overrides = []): string
         'exp' => $now + 120,
         'email' => 'casey@example.test',
         'name' => 'Casey Officer',
+        'first_name' => 'Casey',
+        'last_name' => 'Officer',
+        'phone_number' => '+31612345678',
+        'preferred_locale' => 'nl',
+        'timezone' => 'Europe/Amsterdam',
         'role' => 'case_officer',
         'tenant_id' => (string) Str::uuid(),
         'tenant_name' => 'Acme Arbodienst',
@@ -57,7 +62,13 @@ test('sso callback verifies the token and logs the user in', function () {
 
     $response->assertRedirect(route('dashboard'));
     $this->assertAuthenticated();
-    expect(User::query()->where('email', 'casey@example.test')->exists())->toBeTrue();
+    $user = User::query()->where('email', 'casey@example.test')->first();
+    expect($user)->not->toBeNull()
+        ->and($user->first_name)->toBe('Casey')
+        ->and($user->last_name)->toBe('Officer')
+        ->and($user->phone_number)->toBe('+31612345678')
+        ->and($user->preferred_locale)->toBe('nl')
+        ->and($user->timezone)->toBe('Europe/Amsterdam');
     expect(Tenant::query()->where('name', 'Acme Arbodienst')->exists())->toBeTrue();
 });
 
