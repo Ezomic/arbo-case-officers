@@ -8,7 +8,7 @@ test('store sends the acting tenant_id to Identity', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    Http::fake(['*/api/users' => Http::response(['id' => (string) Str::uuid(), 'temporary_password' => 'temp-pass'])]);
+    Http::fake(['*/api/users' => Http::response(['id' => (string) Str::uuid()])]);
 
     $response = $this->post('/users', [
         'name' => 'New Doctor',
