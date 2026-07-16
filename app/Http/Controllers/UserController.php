@@ -37,9 +37,9 @@ class UserController extends Controller
             'user_type_id' => ['required', 'string', 'in:arbo,medical_doctor'],
         ]);
 
-        $created = $identity->createUser($user->tenant_id, $data['name'], $data['email'], $data['user_type_id']);
+        $identity->createUser($user->tenant_id, $data['name'], $data['email'], $data['user_type_id']);
 
-        return to_route('users.index')->with('temporaryPassword', $created['temporary_password'] ?? null);
+        return to_route('users.index');
     }
 
     public function update(Request $request, string $uuid, IdentityClient $identity): RedirectResponse

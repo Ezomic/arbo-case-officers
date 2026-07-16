@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head, usePage } from '@inertiajs/vue3';
+import { Form, Head } from '@inertiajs/vue3';
 import { Plus, Trash2 } from '@lucide/vue';
 import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
@@ -27,8 +27,6 @@ type IdentityUser = {
 
 defineProps<{ users: IdentityUser[] }>();
 
-const page = usePage<{ flash?: { temporaryPassword?: string } }>();
-
 const showCreate = ref(false);
 const editingUser = ref<IdentityUser | null>(null);
 
@@ -51,18 +49,6 @@ const userTypeLabel: Record<string, string> = {
                 <Plus class="mr-1 size-4" />
                 Add user
             </Button>
-        </div>
-
-        <div
-            v-if="page.props.flash?.temporaryPassword"
-            class="rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-sm dark:border-yellow-700 dark:bg-yellow-950"
-        >
-            <p class="font-medium">
-                User created. Share this temporary password with them:
-            </p>
-            <code class="mt-1 block font-mono text-base">{{
-                page.props.flash.temporaryPassword
-            }}</code>
         </div>
 
         <div class="rounded-lg border">

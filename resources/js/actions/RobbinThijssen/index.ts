@@ -1,7 +1,7 @@
-import IdentitySsoKit from './IdentitySsoKit'
+import IdentitySsoKit from './IdentitySsoKit';
 
 const RobbinThijssen = {
     IdentitySsoKit: Object.assign(IdentitySsoKit, IdentitySsoKit),
-}
+};
 
-export default RobbinThijssen
+export default RobbinThijssen;
