@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('retention:cleanup')->dailyAt('02:00');
 Schedule::command('task-conditions:evaluate')->dailyAt('03:00');
+Schedule::command('reminders:send')->dailyAt('04:00');
